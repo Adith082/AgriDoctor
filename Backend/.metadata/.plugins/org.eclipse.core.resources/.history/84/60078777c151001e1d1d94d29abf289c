@@ -1,0 +1,5 @@
+package com.visionaryproviders.agridoctor.entities;
+
+public class User {
+
+}
