@@ -54,7 +54,7 @@ async def crop_prediction(input_data: SoilData):
     data = np.array([[N, P, K, temperature, humidity, ph, rainfall]])
     predictedCrop = cropRecommendationModel.predict(data)
     
-    return {'recommendation': predictedCrop}
+    return {'recommendation': predictedCrop[0]}
 
 # Define a function to handle the GET request at '/'
 @app.get("/")
