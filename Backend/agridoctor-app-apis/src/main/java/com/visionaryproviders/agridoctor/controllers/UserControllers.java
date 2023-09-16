@@ -19,6 +19,8 @@ import com.visionaryproviders.agridoctor.payloads.ApiResponse;
 import com.visionaryproviders.agridoctor.payloads.UserDto;
 import com.visionaryproviders.agridoctor.services.UserServices;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserControllers {
@@ -27,14 +29,14 @@ public class UserControllers {
 	
 	// POST-create user
 	@PostMapping("/")
-	public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto){
+	public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto){
 		UserDto createUserDto = this.userServices.createUser(userDto);
 		return new ResponseEntity<>(createUserDto,HttpStatus.CREATED);
 	}
 	
 	//PUT - update user
 	@PutMapping("/{userId}")
-	public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto, @PathVariable("userId") Integer uid){
+	public ResponseEntity<UserDto> updateUser(@Valid @RequestBody UserDto userDto, @PathVariable("userId") Integer uid){
 		UserDto updatedUser = this.userServices.updateUser(userDto, uid);
 		return ResponseEntity.ok(updatedUser);
 	}

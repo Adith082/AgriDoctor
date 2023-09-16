@@ -3,6 +3,7 @@ package com.visionaryproviders.agridoctor.services.implementations;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,9 @@ public class UserServicesImplementation implements UserServices {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private ModelMapper modelMapper;
 	
 	@Override
 	public UserDto createUser(UserDto userDto) {
@@ -67,22 +71,14 @@ public class UserServicesImplementation implements UserServices {
 		
 	}
     public User UserDtoToUser(UserDto userDto) {
-    	User user = new User();
-    	user.setId(userDto.getId());
-    	user.setName(userDto.getName());
-    	user.setEmail(userDto.getEmail());
-    	user.setPassword(userDto.getPassword());
-    	user.setWallet(userDto.getWallet());
+    	User user = this.modelMapper.map(userDto, User.class);
+    	
     	return user;
     }
     
     public UserDto UserToUserDto(User user) {
-    	UserDto userDto = new UserDto();
-    	userDto.setId(user.getId());
-    	userDto.setName(user.getName());
-    	userDto.setEmail(user.getEmail());
-    	userDto.setPassword(user.getPassword());
-    	userDto.setWallet(user.getWallet());
+    	UserDto userDto = this.modelMapper.map(user, UserDto.class);
+    
     	return userDto;
     }
     
