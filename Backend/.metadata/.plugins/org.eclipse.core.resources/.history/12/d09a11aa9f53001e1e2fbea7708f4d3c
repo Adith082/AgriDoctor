@@ -1,0 +1,83 @@
+package com.visionaryproviders.agridoctor.services.implementations;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.visionaryproviders.agridoctor.exceptions.ResourceNotFoundException;
+import com.visionaryproviders.agridoctor.entities.User;
+import com.visionaryproviders.agridoctor.payloads.UserDto;
+import com.visionaryproviders.agridoctor.services.UserServices;
+import com.visionaryproviders.agridoctor.repositories.UserRepository;
+
+public class UserServicesImplementation implements UserServices {
+
+	@Autowired
+	private UserRepository userRepository;
+	
+	@Override
+	public UserDto createUser(UserDto userDto) {
+		User user = this.UserDtoToUser(userDto);
+		User savedUser  = this.userRepository.save(user);
+		
+		return this.UserToUserDto(savedUser);
+	}
+
+	@Override
+	public UserDto updateUser(UserDto userDto, Integer userId) {
+		
+		User user = this.userRepository.findById(userId)
+				.orElseThrow(()-> new ResourceNotFoundException("User"," Id ",userId));
+		user.setName(userDto.getName());
+		user.setEmail(userDto.getEmail());
+		user.setPassword(userDto.getPassword());
+		user.setWallet(userDto.getWallet());
+		
+		User updatedUser = this.userRepository.save(user);
+		
+		return this.UserToUserDto(updatedUser);
+	}
+
+	@Override
+	public UserDto getUserById(Integer userId) {
+		
+		User user = this.userRepository.findById(userId)
+				.orElseThrow(()-> new ResourceNotFoundException("User"," Id ",userId));
+		
+		return this.UserToUserDto(user);
+	}
+
+	@Override
+	public List<UserDto> getAllUsers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void deleteUser(Integer userId) {
+		// TODO Auto-generated method stub
+
+	}
+    public User UserDtoToUser(UserDto userDto) {
+    	User user = new User();
+    	user.setId(userDto.getId());
+    	user.setName(userDto.getName());
+    	user.setEmail(userDto.getEmail());
+    	user.setPassword(userDto.getPassword());
+    	user.setWallet(userDto.getWallet());
+    	return user;
+    }
+    
+    public UserDto UserToUserDto(User user) {
+    	UserDto userDto = new UserDto();
+    	userDto.setId(user.getId());
+    	user.setName(user.getName());
+    	user.setEmail(user.getEmail());
+    	userDto.setPassword(user.getPassword());
+    	userDto.setWallet(user.getWallet());
+    	return userDto;
+    }
+    
+    
+    
+}

@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class UserDto {
     
-	private int id;
+	private int id,wallet;
 	private String name, email, password;
 	
 }
