@@ -4,3 +4,6 @@ uvicorn[standard]==0.17.*
 sentencepiece==0.1.*
 torch==1.11.*
 pydantic
+tensorflow
+scikit-learn
+numpy
