@@ -7,3 +7,7 @@ pydantic
 tensorflow
 scikit-learn
 numpy
+starlette
+pillow
+torchvision
+python-multipart
