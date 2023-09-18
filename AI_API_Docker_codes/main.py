@@ -95,10 +95,6 @@ class SoilData(BaseModel):
     rainfall: float
     temperature: float
     humidity: float
-
-# Define a Pydantic model to represent the request body for disease prediction
-class DiseaseImage(BaseModel):
-    image: UploadFile
     
 @app.post("/crop-predict")
 async def crop_prediction(input_data: SoilData):
