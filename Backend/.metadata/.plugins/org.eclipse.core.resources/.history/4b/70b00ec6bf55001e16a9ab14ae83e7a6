@@ -1,0 +1,85 @@
+package com.visionaryproviders.agridoctor.services.implementations;
+
+import java.util.Date;
+import java.util.List;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.visionaryproviders.agridoctor.entities.FeedBack;
+import com.visionaryproviders.agridoctor.entities.User;
+import com.visionaryproviders.agridoctor.exceptions.ResourceNotFoundException;
+import com.visionaryproviders.agridoctor.payloads.FeedBackDto;
+import com.visionaryproviders.agridoctor.repositories.FeedBackRepository;
+import com.visionaryproviders.agridoctor.repositories.UserRepository;
+import com.visionaryproviders.agridoctor.services.FeedBackServices;
+
+@Service
+public class FeedBackServicesImplementation implements FeedBackServices {
+
+	
+	@Autowired
+    private FeedBackRepository feedBackRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
+
+    @Autowired
+    private UserRepository userRepository;
+	
+	
+	@Override
+	public FeedBackDto createFeedBack(FeedBackDto feedBackDto, Integer userId) {
+		
+		 User user = this.userRepository.findById(userId)
+	                .orElseThrow(() -> new ResourceNotFoundException("User ", "User id", userId));
+
+	        FeedBack feedBack = this.modelMapper.map(feedBackDto, FeedBack.class);
+	        feedBack.setImageName("default.png");
+	        feedBack.setAddedDate(new Date());
+	        feedBack.setUser(user);
+
+	        FeedBack newFeedBack = this.feedBackRepository.save(feedBack);
+
+	        return this.modelMapper.map(newFeedBack, FeedBackDto.class);
+		
+	}
+
+	@Override
+	public FeedBackDto updateFeedback(FeedBackDto feedBackDto, Integer feedBackId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void deleteFeedBack(Integer feedBackId) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public List<FeedBackDto> getAllFeedBack() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public FeedBackDto getFeedBackById(Integer feedBackId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<FeedBackDto> getFeedBacksByUser(Integer userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<FeedBackDto> searchFeedBacks(String keyword) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}
