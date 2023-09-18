@@ -1,0 +1,11 @@
+package com.visionaryproviders.agridoctor.payloads;
+
+public class FeedBackDto {
+
+	
+    private String FeedBackTitle;
+	
+	private String content;
+	
+	
+}
