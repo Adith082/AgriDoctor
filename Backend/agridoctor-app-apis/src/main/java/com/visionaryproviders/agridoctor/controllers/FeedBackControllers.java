@@ -2,7 +2,10 @@ package com.visionaryproviders.agridoctor.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,20 +13,36 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.beans.factory.annotation.Value;
+
 
 import com.visionaryproviders.agridoctor.payloads.ApiResponse;
 import com.visionaryproviders.agridoctor.payloads.FeedBackDto;
 import com.visionaryproviders.agridoctor.services.FeedBackServices;
+import com.visionaryproviders.agridoctor.services.FileServices;
+
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 @RestController
 @RequestMapping("/api/")
+
 public class FeedBackControllers {
 	
 	@Autowired
 	private FeedBackServices feedBackService;
 	
-	//create feedback
+	@Autowired
+	private FileServices fileService;
+	
+	@Value("${project.image}")
+	private String path;
+	
 	
 	@PostMapping("/user/{userId}/feedback")
 	public ResponseEntity<FeedBackDto> createPost(@RequestBody FeedBackDto feedBackDto, @PathVariable Integer userId) {
@@ -83,9 +102,32 @@ public class FeedBackControllers {
 
 		}
 		
+		// Feedback image upload
+		@PostMapping("/feedback/image/upload/{feedBackId}")
+		public ResponseEntity<FeedBackDto> uploadPostImage(@RequestParam("image") MultipartFile image,
+				@PathVariable Integer feedBackId) throws IOException {
+
+			FeedBackDto feedBackDto = this.feedBackService.getFeedBackById(feedBackId);
+			
+			String fileName = this.fileService.uploadImage(path, image);
+			feedBackDto.setImageName(fileName);
+			FeedBackDto updateFeedBack = this.feedBackService.updateFeedback(feedBackDto, feedBackId);
+			return new ResponseEntity<FeedBackDto>(updateFeedBack, HttpStatus.OK);
+
+		}
 		
-		
-		
+		 //method to serve files
+	    @GetMapping(value = "/feedback/image/{imageName}",produces = MediaType.IMAGE_JPEG_VALUE)
+	    public void downloadImage(
+	            @PathVariable("imageName") String imageName,
+	            HttpServletResponse response
+	    ) throws IOException {
+
+	        InputStream resource = this.fileService.getResource(path, imageName);
+	        response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+	        StreamUtils.copy(resource,response.getOutputStream())   ;
+
+	    }
 		
 		
 		
