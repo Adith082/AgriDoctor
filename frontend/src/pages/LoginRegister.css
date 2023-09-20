@@ -1,0 +1,92 @@
+body {
+    background-image: url('/src/images/organic-wheat-harvesting-sunset-meadow-generated-by-ai.jpg');/*Picture Credit: Image by vectorstock on Freepik*/
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.warn-card{
+    width: 100%;
+}
+
+.signup-section{
+    width: 40%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+
+/* For screens up to 767px (typically mobile devices) */
+@media (max-width: 767px) {
+    .signup-section {
+        width: 90%; /* Adjust width for smaller screens */
+        height: auto; /* Remove fixed height */
+    }
+}
+
+.heading{
+    font-size: 3rem;
+    color: #0e0f0e;
+    text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.5); /* Add text shadow */
+    margin-bottom: 20px; /* Add some space below the heading */
+  }
+
+  .input-group-text-dark {
+    font-weight: bold;
+  }
+
+  .login-section{
+    width: 40%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+
+.hidden {
+    display: none;
+}
+
+.custom-card {
+    background-color: rgba(255, 255, 0, 0.5); /* Transparent yellow */
+  }
+
+/* Custom button styles */
+.custom-button {
+    background-color: #28a745; /* Green */
+    color: #000000; /* Black */
+    border: 1px solid #000000; /* Black border */
+  }
+  
+  /* Hover styles */
+  .custom-button:hover {
+    background-color: #218838; /* Darker green on hover */
+  }
+
+  .highlighted-link {
+    cursor: pointer;
+    color: #28a745; /* Green */
+    text-decoration: underline;
+    font-weight: bold;
+  }
+  
+  .login-text {
+    color: white;
+    font-weight: bold;
+  }
+  
+  .highlighted-link {
+    cursor: pointer;
+    color: #28a745; /* Green */
+    text-decoration: underline;
+  }
+  
+  .highlighted-link:hover {
+    color: #218838; /* Darker green on hover */
+  }
+  
