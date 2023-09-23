@@ -167,7 +167,7 @@ function LoginRegister() {
   
 
   return (
-    <div>
+    <div className='main-container'>
       <NavbarLR setShowSignup={setShowSignup} resetForm={resetForm} setAdminShow={setAdminShow}/>
       <div className={`signup-section ${showSignup ? '' : 'hidden'}`}>
         <h2 className="text-center mb-4 heading">Sign Up</h2>

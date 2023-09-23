@@ -1,0 +1,42 @@
+.main-container {
+  background-image: url('/src/images/top-view-gardening-tools-flower-pot.jpg');/*Picture Credit: Image by Freepik*/
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  height: 100vh;
+  width: 100vw;
+}
+
+.vh-80{
+    height: 80vh;
+}
+
+.card-image {
+    max-height: 100%; /* Adjust this value as needed */
+    max-width: 100%; /* Adjust this value as needed */
+  }
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  .card:hover {
+    transform: translateY(-5px); /* Move the card up by 5 pixels */
+    transition: transform 0.3s; /* Apply transition effect with a duration of 0.3 seconds */
+  }
+  
+  .card-title {
+    text-align: center;
+  }
+
+  /* Custom button styles */
+.custom-button {
+    background-color: #28a745; /* Green */
+    color: #000000; /* Black */
+    border: 1px solid #000000; /* Black border */
+  }
+  

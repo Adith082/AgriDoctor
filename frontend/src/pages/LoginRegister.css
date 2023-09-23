@@ -1,8 +1,10 @@
-body {
+.main-container {
     background-image: url('/src/images/organic-wheat-harvesting-sunset-meadow-generated-by-ai.jpg');/*Picture Credit: Image by vectorstock on Freepik*/
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
+    height: 100vh;
+    width: 100vw;
 }
 
 .warn-card{
