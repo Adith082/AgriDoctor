@@ -7,6 +7,8 @@ import com.visionaryproviders.agridoctor.payloads.UserDto;
 
 
 public interface UserServices {
+	
+	UserDto registerNewUser(UserDto user);
     
 	UserDto createUser(UserDto user);
 	

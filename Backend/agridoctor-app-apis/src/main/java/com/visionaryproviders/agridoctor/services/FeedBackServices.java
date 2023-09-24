@@ -32,7 +32,6 @@ public interface FeedBackServices {
 		//get all feedbacks by user
 		List<FeedBackDto> getFeedBacksByUser(Integer userId);
 		
-		//search feedbacks
-		List<FeedBackDto> searchFeedBacks(String keyword);
+	
 		
 }

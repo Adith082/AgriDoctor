@@ -5,12 +5,16 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.visionaryproviders.agridoctor.exceptions.ResourceNotFoundException;
+import com.visionaryproviders.agridoctor.config.AppConstants;
+import com.visionaryproviders.agridoctor.entities.Role;
 import com.visionaryproviders.agridoctor.entities.User;
 import com.visionaryproviders.agridoctor.payloads.UserDto;
 import com.visionaryproviders.agridoctor.services.UserServices;
+import com.visionaryproviders.agridoctor.repositories.RoleRepository;
 import com.visionaryproviders.agridoctor.repositories.UserRepository;
 
 @Service
@@ -21,6 +25,15 @@ public class UserServicesImplementation implements UserServices {
 	
 	@Autowired
 	private ModelMapper modelMapper;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private RoleRepository roleRepository;
+	
+	
+	
 	
 	@Override
 	public UserDto createUser(UserDto userDto) {
@@ -81,6 +94,23 @@ public class UserServicesImplementation implements UserServices {
     
     	return userDto;
     }
+
+	@Override
+	public UserDto registerNewUser(UserDto userDto) {
+		User user = this.modelMapper.map(userDto, User.class);
+
+		// encoded the password
+		user.setPassword(this.passwordEncoder.encode(user.getPassword()));
+
+		// roles
+		Role role = this.roleRepository.findById(AppConstants.NORMAL_USER).get();
+
+		user.getRoles().add(role);
+
+		User newUser = this.userRepository.save(user);
+
+		return this.modelMapper.map(newUser, UserDto.class);
+	}
     
     
     

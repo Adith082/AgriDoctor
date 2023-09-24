@@ -1,0 +1,7 @@
+package com.visionaryproviders.agridoctor.config;
+
+
+
+public class SecurityConfig {
+
+}
