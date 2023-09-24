@@ -1,5 +1,0 @@
-package com.visionaryproviders.agridoctor.payloads;
-
-public class ApiResponse {
-
-}

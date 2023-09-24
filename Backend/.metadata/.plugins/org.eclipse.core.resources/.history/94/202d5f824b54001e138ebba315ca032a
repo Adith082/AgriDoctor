@@ -1,5 +1,0 @@
-package com.visionaryproviders.agridoctor.exceptions;
-
-public class GlobalExcetionHandler {
-
-}
