@@ -44,7 +44,8 @@ function Home() {
   }
 
   return (
-    <div className='main-container'>
+    <div>
+    <div className='home-container'>
         <NavbarG currentPage={0} walletBalance={walletBalance}/>
         <Container className="mt-4 d-flex justify-content-center align-items-center vh-80">
             <Row xs={1} md={2} lg={3} className="g-4">
@@ -86,6 +87,7 @@ function Home() {
                 </Col>
             </Row>
         </Container>
+    </div>
     </div>
   )
 }
