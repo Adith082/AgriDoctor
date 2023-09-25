@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -7,15 +7,37 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { toast } from "react-toastify";
 import "./NavbarG.css"
 import { useNavigate } from 'react-router-dom';
+import Modal from 'react-bootstrap/Modal';
+import Collapse from 'react-bootstrap/Collapse';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Card from 'react-bootstrap/Card';
+import Image from 'react-bootstrap/Image';
 
 const NavbarG = ({currentPage, walletBalance}) => {
 
     const navigate = useNavigate();
 
+    const [showModal, setShowModal] = useState(false);
+    const [accountNo, setAccountNo] = useState("");
+    const [cvc, setCvc] = useState("");
+    const [date, setDate] = useState("");
+    const [amount, setAmount] = useState(0);
+
+    const [accountNoValid, setAccountNoValid] = useState(true);
+    const [cvcValid, setCvcValid] = useState(true);
+    const [dateValid, setDateValid] = useState(true);
+    const [amountValid, setAmountValid] = useState(true);
+
+    const [accountNoWarn, setAccountNoWarn] = useState("Field cannot be empty!");
+    const [cvcWarn, setCvcWarn] = useState("Field cannot be empty!");
+    const [dateWarn, setDateWarn] = useState("Field cannot be empty!");
+    const [amountWarn, setAmountWarn] = useState("Field cannot be empty!");
+
     const handleLogout = () => {
         // This is where you put your custom logout logic
         navigate('/');
-        alert("Logout function executed!");
+        toast.warn("Successfully Logged Out!");
     };
 
     const handleDankMemesClick = () => {
@@ -24,8 +46,42 @@ const NavbarG = ({currentPage, walletBalance}) => {
     };
 
     const handleAddWallet = () => {
-        toast.success('Wallet Balance Add')
+        setShowModal(!showModal);
+        setAccountNoValid(true);
+        setCvcValid(true);
+        setDateValid(true);
+        setAmountValid(true);
+        setAccountNoWarn("Field cannot be empty!");
+        setCvcWarn("Field cannot be empty!");
+        setDateWarn("Field cannot be empty!");
+        setAmountWarn("Field cannot be empty!");
     };
+
+    const handleAddBalance = (e) => {
+
+        if (accountNo === "") {
+            setAccountNoValid(false);
+            setAccountNoWarn("Field cannot be empty!");
+        }
+
+        if (cvc === "") {
+            setCvcValid(false);
+            setCvcWarn("Field cannot be empty!");
+        }
+
+        if (date === "") {
+            setDateValid(false);
+            setDateWarn("Field cannot be empty!");
+        }
+
+        if (amount === "") {
+            setAmountValid(false);
+            setAmountWarn("Field cannot be empty!");
+        }
+
+        if(accountNoValid&&cvcValid&&dateValid&&amountValid)
+            toast.success("Wallet balance recharge successful!");
+    }
 
     return (
         <div className='p-3'>
@@ -86,6 +142,90 @@ const NavbarG = ({currentPage, walletBalance}) => {
                 </Navbar.Collapse>
             </Container>
             </Navbar>
+
+
+            <Modal show={showModal} onHide={handleAddWallet} centered>
+                <Modal.Header closeButton>
+                    <Image
+                        width={64}
+                        height={64}
+                        className="mr-3"
+                        src="https://cdn-icons-png.flaticon.com/512/349/349221.png" //In=mage Credit: FlatIcon
+                    />
+                    <Modal.Title>&nbsp;&nbsp;VISA Card Information</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <InputGroup className="mb-3">
+                        <InputGroup.Text  className="input-group-text-dark">Account No.</InputGroup.Text>
+                        <Form.Control
+                        type="number"
+                        placeholder="Card Number"
+                        value={accountNo}
+                        onChange={(e)=>{setAccountNo(e.target.value)}}
+                        />
+                        <Collapse in={!accountNoValid}>
+                        <div id="example-collapse-text">
+                            <Card body className='warn-card custom-card'>
+                            {accountNoWarn}
+                            </Card>
+                        </div>
+                        </Collapse>
+                    </InputGroup>
+                    <InputGroup className="mb-3">
+                        <InputGroup.Text  className="input-group-text-dark">CVC</InputGroup.Text>
+                        <Form.Control
+                        type="number"
+                        placeholder="CVC"
+                        value={cvc}
+                        onChange={(e)=>{setCvc(e.target.value)}}
+                        />
+                        <Collapse in={!cvcValid}>
+                        <div id="example-collapse-text">
+                            <Card body className='warn-card custom-card'>
+                            {cvcWarn}
+                            </Card>
+                        </div>
+                        </Collapse>
+                    </InputGroup>
+                    <InputGroup className="mb-3">
+                        <InputGroup.Text  className="input-group-text-dark">Expiry Date</InputGroup.Text>
+                        <Form.Control
+                        type="date"
+                        placeholder="Card Expiry Date"
+                        value={date}
+                        onChange={(e)=>{setDate(e.target.value)}}
+                        />
+                        <Collapse in={!dateValid}>
+                        <div id="example-collapse-text">
+                            <Card body className='warn-card custom-card'>
+                            {dateWarn}
+                            </Card>
+                        </div>
+                        </Collapse>
+                    </InputGroup>
+                    <InputGroup className="mb-3">
+                        <InputGroup.Text  className="input-group-text-dark">Amount</InputGroup.Text>
+                        <Form.Control
+                        type="number"
+                        placeholder="Amount to be added"
+                        value={amount}
+                        onChange={(e)=>{setAmount(e.target.value)}}
+                        />
+                        <Collapse in={!amountValid}>
+                        <div id="example-collapse-text">
+                            <Card body className='warn-card custom-card'>
+                            {amountWarn}
+                            </Card>
+                        </div>
+                        </Collapse>
+                    </InputGroup>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="outline-success" onClick={handleAddBalance}>
+                        Recharge Account
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     )
 }
