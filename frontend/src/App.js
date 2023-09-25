@@ -3,7 +3,7 @@ import LoginRegister from "./pages/LoginRegister";
 import Home from "./pages/Home";
 import CropPredict from "./pages/CropPredict"
 import FertilizerPredict from "./pages/FertilizerPredict"
-import DiseasePredict from "./pages/FertilizerPredict"
+import DiseasePredict from "./pages/DiseasePredict"
 
 function App() {
   return (
