@@ -1,6 +1,0 @@
-package com.visionaryproviders.agridoctor.config;
-
-public class AppConstants {
-
-	//any constants used in the entire project will be initialized here
-}

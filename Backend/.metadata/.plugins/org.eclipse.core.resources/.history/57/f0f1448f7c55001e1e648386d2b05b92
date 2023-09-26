@@ -1,5 +1,0 @@
-package com.visionaryproviders.agridoctor.repositories;
-
-public interface FeedBackRepository {
-
-}

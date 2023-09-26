@@ -1,0 +1,22 @@
+package com.visionaryproviders.agridoctor.externalservices;
+
+import org.springframework.stereotype.Service;
+
+import com.visionaryproviders.agridoctor.payloads.CropFertilizerRecommendationRequestDto;
+import com.visionaryproviders.agridoctor.payloads.CropFertilizerRecommendationResponse;
+
+@Service
+public class CropFertilizerRecommendationApiServices {
+	
+	
+	
+	public CropFertilizerRecommendationResponse callCropFertilizerRecommendationApi(CropFertilizerRecommendationRequestDto request) {
+		
+		
+		
+		
+		
+		return null;
+	}
+	
+}

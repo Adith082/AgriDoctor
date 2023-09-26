@@ -1,0 +1,5 @@
+package com.visionaryproviders.agridoctor.payloads;
+
+public class CropFertilizerRecommendationResponse {
+
+}
