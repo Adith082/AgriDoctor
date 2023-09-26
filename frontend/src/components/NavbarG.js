@@ -40,9 +40,19 @@ const NavbarG = ({currentPage, walletBalance}) => {
         toast.warn("Successfully Logged Out!");
     };
 
-    const handleDankMemesClick = () => {
-    // This is where you put your custom logic for Dank memes
-        toast.success("Successfully logged out!")
+    const handleCropPredClick = () => {
+        navigate("/crop-predict");
+        // toast.success("Successfully logged out!")
+    };
+
+    const handleFertilizerPredClick = () => {
+        navigate("/fertilizer-predict");
+        // toast.success("Successfully logged out!")
+    };
+
+    const handleDiseasePredClick = () => {
+        navigate("/disease-predict");
+        // toast.success("Successfully logged out!")
     };
 
     const handleAddWallet = () => {
@@ -104,13 +114,13 @@ const NavbarG = ({currentPage, walletBalance}) => {
                     <Nav.Link href='/home' className={currentPage === 0 ? 'bold' : ''}>
                         Home
                     </Nav.Link>
-                    <Nav.Link onClick={handleDankMemesClick} className={currentPage === 1 ? 'bold' : ''}>
+                    <Nav.Link onClick={handleCropPredClick} className={currentPage === 1 ? 'bold' : ''}>
                         Crop Recommendation
                     </Nav.Link>
-                    <Nav.Link onClick={handleDankMemesClick} className={currentPage === 2 ? 'bold' : ''}>
+                    <Nav.Link onClick={handleFertilizerPredClick} className={currentPage === 2 ? 'bold' : ''}>
                         Fertilizer Recommendation
                     </Nav.Link>
-                    <Nav.Link onClick={handleDankMemesClick} className={currentPage === 3 ? 'bold' : ''}>
+                    <Nav.Link onClick={handleDiseasePredClick} className={currentPage === 3 ? 'bold' : ''}>
                         Disease Prediction
                     </Nav.Link>
                     <Navbar.Brand>

@@ -124,7 +124,7 @@ function DiseasePredict() {
           <div className={diseaseMessage===defaultDiseaseMessage? "no-display":"feedback-section"}>
             <h2 className='feedback-title'>Your feedback On Identified Disease</h2>
             <img
-              src={URL.createObjectURL(image)}
+              src={image? URL.createObjectURL(image):""}
               alt="Uploaded Leaf"
               style={{ maxWidth: '15vw', maxHeight: '15vh', border: "2px solid white" }}
             />
