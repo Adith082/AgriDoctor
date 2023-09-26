@@ -113,15 +113,6 @@ const NavbarG = ({currentPage, walletBalance}) => {
                     <Nav.Link onClick={handleDankMemesClick} className={currentPage === 3 ? 'bold' : ''}>
                         Disease Prediction
                     </Nav.Link>
-                    <Navbar.Brand onClick={handleAddWallet}>
-                        <img
-                        src="https://cdn-icons-png.flaticon.com/512/4315/4315609.png"//credit flaticon
-                        width="30"
-                        height="30"
-                        className="d-inline-block align-top"
-                        alt="React Bootstrap logo"
-                        />
-                    </Navbar.Brand>
                     <Navbar.Brand>
                         <img
                         src="https://cdn-icons-png.flaticon.com/512/9548/9548542.png"//credit flaticon
@@ -134,6 +125,15 @@ const NavbarG = ({currentPage, walletBalance}) => {
                     <Nav.Link>
                         Tk. {walletBalance}
                     </Nav.Link>
+                    <Navbar.Brand onClick={handleAddWallet}>
+                        <img
+                        src="https://cdn-icons-png.flaticon.com/512/4315/4315609.png"//credit flaticon
+                        width="30"
+                        height="30"
+                        className="d-inline-block align-top"
+                        alt="React Bootstrap logo"
+                        />
+                    </Navbar.Brand>
                 </Nav>
                 "  "
                 <Nav>
@@ -150,7 +150,7 @@ const NavbarG = ({currentPage, walletBalance}) => {
                         width={64}
                         height={64}
                         className="mr-3"
-                        src="https://cdn-icons-png.flaticon.com/512/349/349221.png" //In=mage Credit: FlatIcon
+                        src="https://cdn-icons-png.flaticon.com/512/349/349221.png" //Image Credit: FlatIcon
                     />
                     <Modal.Title>&nbsp;&nbsp;VISA Card Information</Modal.Title>
                 </Modal.Header>
