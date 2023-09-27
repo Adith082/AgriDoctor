@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import CropPredict from "./pages/CropPredict"
 import FertilizerPredict from "./pages/FertilizerPredict"
 import DiseasePredict from "./pages/DiseasePredict"
+import AdminHome from "./pages/AdminHome";
 
 function App() {
   return (
@@ -41,6 +42,13 @@ function App() {
           path="/disease-predict"
           element={
             <DiseasePredict/>
+          }
+        />
+
+        <Route
+          path="/admin-home"
+          element={
+            <AdminHome/>
           }
         />
       </Routes>

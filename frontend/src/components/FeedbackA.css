@@ -1,0 +1,45 @@
+.admin-feedback-container{
+    width: 80vw;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.no-display{
+    display: none;
+}
+
+.column-flex-green{
+    display: flex;
+    flex-direction: column;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    background-color: rgba(0, 255, 0, 0.2);
+    border-radius: 1rem;
+    padding: 1rem;
+    width: 50vw;
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem; 
+}
+
+.column-flex{
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem; 
+}
+
+.bg-green{
+    background-color: rgba(0, 255, 0, 0.2);
+    border-radius: 1rem;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+}
