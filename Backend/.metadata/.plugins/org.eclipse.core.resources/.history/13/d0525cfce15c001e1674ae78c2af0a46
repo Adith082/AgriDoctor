@@ -34,7 +34,7 @@ public class CropDiseaseDetectionApiServices {
 
 	
 	@Autowired
-    private RestTemplate restTemplate ;
+    private RestTemplate restTemplate;
 	
 	
 	public CropDiseaseDetectionResponse callCropDiseaseDetectionApi(@RequestParam("input_data") MultipartFile file) throws IOException  {

@@ -20,7 +20,6 @@ import org.springframework.http.HttpEntity;
 import com.visionaryproviders.agridoctor.config.RestTemplateConfig;
 import com.visionaryproviders.agridoctor.payloads.CropDiseaseDetectionRequestDto;
 import com.visionaryproviders.agridoctor.payloads.CropDiseaseDetectionResponse;
-import com.visionaryproviders.agridoctor.payloads.CropRecommendationResponse;
 
 @Service
 public class CropDiseaseDetectionApiServices {
@@ -34,7 +33,7 @@ public class CropDiseaseDetectionApiServices {
 
 	
 	@Autowired
-    private RestTemplate restTemplate ;
+    private RestTemplate restTemplate;
 	
 	
 	public CropDiseaseDetectionResponse callCropDiseaseDetectionApi(@RequestParam("input_data") MultipartFile file) throws IOException  {
@@ -49,19 +48,12 @@ public class CropDiseaseDetectionApiServices {
 		//System.out.println(requestEntity.getHeaders());
 	    System.out.println("2222");
 	 // Make a POST request to the external API with the image file
-	    
-	 // Make the POST request to the external API
-        ResponseEntity<CropDiseaseDetectionResponse> responseEntity =
-                restTemplate.postForEntity(cropDiseaseDetectionApiUrl, requestEntity, CropDiseaseDetectionResponse.class);
-	    
-	    
-	    
-	/*    ResponseEntity<CropDiseaseDetectionResponse> responseEntity = restTemplate.exchange(
+	    ResponseEntity<CropDiseaseDetectionResponse> responseEntity = restTemplate.exchange(
 	        cropDiseaseDetectionApiUrl,
 	        HttpMethod.POST,
 	        requestEntity,
 	        CropDiseaseDetectionResponse.class
-	    ); */
+	    );
 	    System.out.println("3333333333333");
 	    
 		return responseEntity.getBody();

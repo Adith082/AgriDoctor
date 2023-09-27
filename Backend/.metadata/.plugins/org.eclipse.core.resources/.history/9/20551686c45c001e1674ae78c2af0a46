@@ -51,10 +51,16 @@ public class ExternalApiControllers {
 	
 	
 	@PostMapping("/crop-disease-detection")
-	public CropDiseaseDetectionResponse callCropDiseaseDetectionExternalApi(@RequestParam("input_data") MultipartFile file) throws IOException  {
-		  //   System.out.println("HELLO FROM CROP DISEASE DETECTION");
-			return cropDiseaseDetectionApiServices.callCropDiseaseDetectionApi(file);
-			
+	public CropDiseaseDetectionResponse callCropDiseaseDetectionExternalApi(@RequestPart("input_data") CropDiseaseDetectionRequestDto request)  {
+		     System.out.println("HELLO FROM CROP DISEASE DETECTION");
+		try {
+			return cropDiseaseDetectionApiServices.callCropDiseaseDetectionApi(request);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+		
 	}
 	
 	

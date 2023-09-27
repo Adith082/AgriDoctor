@@ -41,7 +41,7 @@ public class CropDiseaseDetectionApiServices {
 		
 		// Create headers for the multipart request
 	    HttpHeaders headers = new HttpHeaders();
-	    headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+	    headers.setContentType(MediaType.APPLICATION_JSON);
 	   
 		System.out.println("1111");
 	 // Create a request entity with the file and headers
