@@ -20,6 +20,8 @@ function DiseasePredict() {
   const [diseaseMessage, setDiseaseMessage] = useState(defaultDiseaseMessage);
 
   const [feedbackMessage, setFeedbackMessage] = useState("")
+  const [causeDisease, setCauseDisease] = useState("Disease cause goes here!")
+  const [preventionDisease, setPreventionDisease] = useState("Disease prevention goes here!")
 
   useEffect(() => {
     // Define a function to fetch the wallet balance
@@ -70,6 +72,8 @@ function DiseasePredict() {
   }
 
   const handlePredictionClick = (e) => {
+    setCauseDisease("");
+    setPreventionDisease("");
     toast.success("Prediction Clicked");
   }
 
@@ -119,6 +123,8 @@ function DiseasePredict() {
         <div className='identify-disease'>
           <h1 className='image-upload-title-ex'>Identified Disease</h1>
           <div className='upload-instruct'>{diseaseMessage}</div>
+          <div className='upload-instruct'> <strong>Cause of Disease</strong> <br /> {causeDisease} </div>
+          <div className='upload-instruct'> <strong>Prevention of Disease</strong> <br /> {preventionDisease} </div>
           <Button className="prediction-button" onClick={handlePredictionClick}>Identify Disease</Button>
 
           <div className={diseaseMessage===defaultDiseaseMessage? "no-display":"feedback-section"}>
@@ -128,7 +134,7 @@ function DiseasePredict() {
               alt="Uploaded Leaf"
               style={{ maxWidth: '15vw', maxHeight: '15vh', border: "2px solid white" }}
             />
-            <div><strong>Predicted: </strong>{diseaseMessage}</div>{/** Title of the feedback */}
+            <div><strong>Disease Prediction: </strong>{diseaseMessage}</div>{/** Title of the feedback */}
             <InputGroup className="mb-3">
               <InputGroup.Text  className="input-group-text-dark">Your Feedback</InputGroup.Text>
               <Form.Control
