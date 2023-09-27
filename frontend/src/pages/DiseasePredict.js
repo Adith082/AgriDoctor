@@ -82,7 +82,7 @@ function DiseasePredict() {
       <NavbarG currentPage={3} walletBalance={walletBalance}/>
       <div className='duo-container'>
         <div className='image-upload'>
-          <h1 className='image-upload-title'>Crop leaf Image</h1>
+          <h1 className='image-upload-title-ex'>Crop leaf Image</h1>
           {image ? (
             <img
               src={URL.createObjectURL(image)}
@@ -117,7 +117,7 @@ function DiseasePredict() {
         </div>
 
         <div className='identify-disease'>
-          <h1 className='image-upload-title'>Identified Disease</h1>
+          <h1 className='image-upload-title-ex'>Identified Disease</h1>
           <div className='upload-instruct'>{diseaseMessage}</div>
           <Button className="prediction-button" onClick={handlePredictionClick}>Identify Disease</Button>
 
