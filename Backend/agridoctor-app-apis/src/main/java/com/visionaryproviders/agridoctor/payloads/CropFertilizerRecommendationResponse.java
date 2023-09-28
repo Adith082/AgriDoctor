@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public class CropFertilizerRecommendationResponse {
 	
-	private String recommendation;
+	private String recommendationEnglish, recommendationBengali;
 	
 }

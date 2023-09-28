@@ -9,5 +9,9 @@ public class CropDiseaseDetectionResponse {
 
 	private String prediction;
 	
+	private String DiseaseNameEn, DiseaseNameBn, causeOfDiseaseEn, causeOfDiseaseBn, preventionOrCureEn, preventionOrCureBn, CropNameBn, CropNameEn;
+	
+	
+	
 	
 }

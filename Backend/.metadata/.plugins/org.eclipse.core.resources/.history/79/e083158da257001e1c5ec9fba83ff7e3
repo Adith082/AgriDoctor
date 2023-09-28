@@ -1,5 +1,0 @@
-package com.visionaryproviders.agridoctor.security;
-
-public class JwtAuthenticationEntryPoint {
-
-}

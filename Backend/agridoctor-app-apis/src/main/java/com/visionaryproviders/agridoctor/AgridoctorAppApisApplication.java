@@ -36,7 +36,6 @@ public class AgridoctorAppApisApplication  implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 		
-		
 		try {
 
 			Role roleAdmin = new Role();
