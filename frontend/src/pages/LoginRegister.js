@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import NavbarLR from '../components/NavbarLR.js'
 import './LoginRegister.css'
 import Form from 'react-bootstrap/Form';
@@ -8,8 +8,11 @@ import Card from 'react-bootstrap/Card';
 import Collapse from 'react-bootstrap/Collapse';
 import Button from 'react-bootstrap/Button';
 import { toast } from "react-toastify";
+import { LanguageContext } from '../contexts/LanguageContext.js';
 
 function LoginRegister() {
+
+  const {isEN} = useContext(LanguageContext)
 
   const [firstName, setFirstName] = useState(""); // State for First Name
   const [lastName, setLastName] = useState(""); // State for Last Name
@@ -126,6 +129,7 @@ function LoginRegister() {
   }
 
   const handleLoginClick = () => {
+    console.log(isEN)
     if(emailValid && passwordValid){
       toast.success("Ho Ho Ho! Login Success!")
     }else{
