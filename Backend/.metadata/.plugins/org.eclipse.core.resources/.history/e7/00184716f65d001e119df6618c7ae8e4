@@ -43,19 +43,6 @@ public class UserServicesImplementation implements UserServices {
 		return this.UserToUserDto(savedUser);
 	}
 
-	
-	@Override 
-	public UserDto addWalletUser(Integer userId, Integer addValue) {
-		
-		User user = this.userRepository.findById(userId)
-				.orElseThrow(()-> new ResourceNotFoundException("User","Id",userId));
-		user.setWallet(user.getWallet() + addValue);
-		User updatedUser = this.userRepository.save(user);
-		return this.UserToUserDto(updatedUser);
-	}
-	
-	
-	
 	@Override
 	public UserDto updateUser(UserDto userDto, Integer userId) {
 		
