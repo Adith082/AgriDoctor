@@ -242,12 +242,12 @@ function LoginRegister() {
           </Collapse>
         </InputGroup>
         <Button className="custom-button" onClick={handleRegistrationClick}>Confirm Registration</Button>
-        <span className="login-text">Already registered? <span className="highlighted-link" onClick={() => setShowSignup(true)}>Login now here!</span></span>
+        <span className="login-text">Already registered? <span className="highlighted-link" onClick={() => setShowSignup(false)}>Login now here!</span></span>
       </div>
       <div className={`login-section ${showSignup || (adminShow) ? 'hidden' : ''}`}>
         <h2 className="text-center mb-4 heading">Login</h2>
         <InputGroup className="mb-3">
-          <InputGroup.Text  className="input-group-text-dark">email</InputGroup.Text>
+          <InputGroup.Text  className="input-group-text-dark">E-mail</InputGroup.Text>
           <Form.Control
             type="E-mail"
             placeholder="e-mail address"
@@ -284,7 +284,7 @@ function LoginRegister() {
       <div className={`login-section ${adminShow ? '' : 'hidden'}`}>
         <h2 className="text-center mb-4 heading">Admin Login</h2>
         <InputGroup className="mb-3">
-          <InputGroup.Text  className="input-group-text-dark">email</InputGroup.Text>
+          <InputGroup.Text  className="input-group-text-dark">E-mail</InputGroup.Text>
           <Form.Control
             type="E-mail"
             placeholder="e-mail address"
