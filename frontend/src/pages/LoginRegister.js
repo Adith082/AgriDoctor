@@ -194,7 +194,7 @@ function LoginRegister() {
           </Collapse>
         </InputGroup>
         <InputGroup className="mb-3">
-          <InputGroup.Text  className="input-group-text-dark">email</InputGroup.Text>
+          <InputGroup.Text  className="input-group-text-dark">E-mail</InputGroup.Text>
           <Form.Control
             type="E-mail"
             placeholder="e-mail address"
