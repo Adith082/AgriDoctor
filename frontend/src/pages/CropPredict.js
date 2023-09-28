@@ -144,7 +144,7 @@ function CropPredict() {
               </div>
               </Collapse>
             </InputGroup>
-            <Button className="prediction-button" onClick={handleCropPredClick}>Submit Feedback</Button>
+            <Button className="prediction-button" onClick={handleCropPredClick}>Get Crop Recommendation</Button>
 
           </div>
         </div>
