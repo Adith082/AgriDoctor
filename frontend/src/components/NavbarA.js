@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom';
 
-const NavbarA = ({}) => {
+const NavbarA = () => {
 
     const currentPage=0;
 
