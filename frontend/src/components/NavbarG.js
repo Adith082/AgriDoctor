@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -13,10 +13,14 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Card from 'react-bootstrap/Card';
 import Image from 'react-bootstrap/Image';
+import LanguageSelector from './LanguageSelector';
+import { LanguageContext } from '../contexts/LanguageContext';
 
 const NavbarG = ({currentPage, walletBalance}) => {
 
     const navigate = useNavigate();
+
+    const {isEN} = useContext(LanguageContext)
 
     const [showModal, setShowModal] = useState(false);
     const [accountNo, setAccountNo] = useState("");
@@ -104,7 +108,8 @@ const NavbarG = ({currentPage, walletBalance}) => {
                     height="30"
                     className="d-inline-block align-top"
                     alt="React Bootstrap logo"
-                    />
+                    />{' '}
+                    {isEN?"AgriDoctor":"অ্যাগ্রি-ডক্টর"}
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
@@ -112,16 +117,16 @@ const NavbarG = ({currentPage, walletBalance}) => {
                 </Nav>
                 <Nav>
                     <Nav.Link href='/home' className={currentPage === 0 ? 'bold' : ''}>
-                        Home
+                        {isEN?"Home":"হোম"}
                     </Nav.Link>
                     <Nav.Link onClick={handleCropPredClick} className={currentPage === 1 ? 'bold' : ''}>
-                        Crop Recommendation
+                        {isEN?"Crop Recommendation":"ফসল সুপারিশ"}
                     </Nav.Link>
                     <Nav.Link onClick={handleFertilizerPredClick} className={currentPage === 2 ? 'bold' : ''}>
-                        Fertilizer Recommendation
+                        {isEN?"Fertilizer Recommendation":"সার/উর্বরক সুপারিশ"}
                     </Nav.Link>
                     <Nav.Link onClick={handleDiseasePredClick} className={currentPage === 3 ? 'bold' : ''}>
-                        Disease Prediction
+                        {isEN?"Disease Identification":"ফসল রোগ চিহ্নিতকরণ"}
                     </Nav.Link>
                     <Navbar.Brand>
                         <img
@@ -133,7 +138,7 @@ const NavbarG = ({currentPage, walletBalance}) => {
                         />
                     </Navbar.Brand>
                     <Nav.Link>
-                        Tk. {walletBalance}
+                        {isEN?"Tk.":"ট"}{' '}{isEN?walletBalance:walletBalance.toLocaleString('bn-BD')}
                     </Nav.Link>
                     <Navbar.Brand onClick={handleAddWallet}>
                         <img
@@ -147,7 +152,11 @@ const NavbarG = ({currentPage, walletBalance}) => {
                 </Nav>
                 "  "
                 <Nav>
-                    <Button variant="outline-success" onClick={handleLogout}>Logout</Button>
+                    <Button variant="outline-success" onClick={handleLogout}>{isEN?"Logout":"লগ-আউট"}</Button>
+                </Nav>
+                "  "
+                <Nav>
+                    <LanguageSelector/>
                 </Nav>
                 </Navbar.Collapse>
             </Container>
@@ -162,11 +171,11 @@ const NavbarG = ({currentPage, walletBalance}) => {
                         className="mr-3"
                         src="https://cdn-icons-png.flaticon.com/512/349/349221.png" //Image Credit: FlatIcon
                     />
-                    <Modal.Title>&nbsp;&nbsp;VISA Card Information</Modal.Title>
+                    <Modal.Title>&nbsp;&nbsp;{isEN?"VISA Card Information":"ভিসা(VISA) কার্ড তথ্য"}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <InputGroup className="mb-3">
-                        <InputGroup.Text  className="input-group-text-dark">Account No.</InputGroup.Text>
+                        <InputGroup.Text  className="input-group-text-dark">{isEN?"Account No.":"অ্যাকাউন্ট নম্বর"}</InputGroup.Text>
                         <Form.Control
                         type="number"
                         placeholder="Card Number"
@@ -198,7 +207,7 @@ const NavbarG = ({currentPage, walletBalance}) => {
                         </Collapse>
                     </InputGroup>
                     <InputGroup className="mb-3">
-                        <InputGroup.Text  className="input-group-text-dark">Expiry Date</InputGroup.Text>
+                        <InputGroup.Text  className="input-group-text-dark">{isEN?"Expiry Date":"উত্তীর্ণের তারিখ"}</InputGroup.Text>
                         <Form.Control
                         type="date"
                         placeholder="Card Expiry Date"
@@ -214,7 +223,7 @@ const NavbarG = ({currentPage, walletBalance}) => {
                         </Collapse>
                     </InputGroup>
                     <InputGroup className="mb-3">
-                        <InputGroup.Text  className="input-group-text-dark">Amount</InputGroup.Text>
+                        <InputGroup.Text  className="input-group-text-dark">{isEN?"Recharge Amount":"রিচার্জ পরিমাণ"}</InputGroup.Text>
                         <Form.Control
                         type="number"
                         placeholder="Amount to be added"
@@ -232,7 +241,7 @@ const NavbarG = ({currentPage, walletBalance}) => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="outline-success" onClick={handleAddBalance}>
-                        Recharge Account
+                        {isEN?"Recharge Balance":"রিচার্জ টাকা"}
                     </Button>
                 </Modal.Footer>
             </Modal>

@@ -11,7 +11,7 @@ import Card from 'react-bootstrap/Card';
 import FeedbackG from '../components/FeedbackG';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-import SupportedCrops from '../components/SupportedCrops';
+import {SupportedCrops} from '../components/SupportedCrops';
 
 function FertilizerPredict() {
   const [walletBalance, setWalletBalance] = useState(0);
