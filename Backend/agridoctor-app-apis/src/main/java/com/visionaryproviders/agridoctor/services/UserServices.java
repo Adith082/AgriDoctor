@@ -20,4 +20,6 @@ public interface UserServices {
 	
 	void deleteUser(Integer userId);
 	
+	UserDto addWalletUser(Integer userId, Integer addValue);
+	
 }

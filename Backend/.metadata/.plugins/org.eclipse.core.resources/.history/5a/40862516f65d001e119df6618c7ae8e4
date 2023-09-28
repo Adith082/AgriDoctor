@@ -35,15 +35,6 @@ public class UserControllers {
 		return new ResponseEntity<>(createUserDto,HttpStatus.CREATED);
 	}
 	
-	//PUT - update wallet by adding value
-	@PutMapping("/{userId}/wallet-add/{addValue}")
-	public ResponseEntity<UserDto> addUserWallet( @PathVariable("userId") Integer uid,@PathVariable("addValue") Integer addValue){
-		UserDto updatedUser = this.userServices.addWalletUser(uid, addValue);
-		return ResponseEntity.ok(updatedUser);
-	}
-	
-	
-	
 	//PUT - update user
 	@PutMapping("/{userId}")
 	public ResponseEntity<UserDto> updateUser(@Valid @RequestBody UserDto userDto, @PathVariable("userId") Integer uid){

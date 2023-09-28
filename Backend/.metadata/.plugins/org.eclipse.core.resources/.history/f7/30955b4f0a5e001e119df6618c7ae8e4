@@ -36,7 +36,7 @@ public class UserControllers {
 	}
 	
 	//PUT - update wallet by adding value
-	@PutMapping("/{userId}/wallet-add/{addValue}")
+	@PutMapping("/{userId}/{addValue}")
 	public ResponseEntity<UserDto> addUserWallet( @PathVariable("userId") Integer uid,@PathVariable("addValue") Integer addValue){
 		UserDto updatedUser = this.userServices.addWalletUser(uid, addValue);
 		return ResponseEntity.ok(updatedUser);
