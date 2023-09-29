@@ -16,14 +16,20 @@ const NavbarLR =  ({setShowSignup, setAdminShow}) => {
       <Navbar collapseOnSelect expand="lg" className="bg-dark navbar-dark rounded">
         <Container>
           <Navbar.Brand href="/">
+            <img
+              src={require('../images/agridoctor-logo1.png')}//credit flaticon
+              width="35"
+              height="35"
+              className="d-inline-block align-top"
+              alt="React Bootstrap logo"
+              />{'  '}
               <img
-                src="https://cdn-icons-png.flaticon.com/512/188/188333.png"//credit: "https://www.flaticon.com/free-icons/leaf" Leaf icons created by Roundicons - Flaticon
-                width="30"
-                height="30"
-                className="d-inline-block align-top"
-                alt="React Bootstrap logo"
-              />{' '}
-              {isEN?"AgriDoctor":"অ্যাগ্রি-ডক্টর"}
+              src={require('../images/agridoctor-wordart.png')}//credit flaticon
+              width="200"
+              height="35"
+              className="d-inline-block align-top"
+              alt="React Bootstrap logo"
+              />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">

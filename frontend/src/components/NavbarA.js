@@ -45,13 +45,19 @@ const NavbarA = () => {
             <Container>
                 <Navbar.Brand href="/home">
                     <img
-                    src="https://cdn-icons-png.flaticon.com/512/188/188333.png"//credit flaticon
-                    width="30"
-                    height="30"
+                    src={require('../images/agridoctor-logo1.png')}//credit flaticon
+                    width="35"
+                    height="35"
                     className="d-inline-block align-top"
                     alt="React Bootstrap logo"
-                    />{' '}
-                    {isEN?"AgriDoctor":"অ্যাগ্রি-ডক্টর"}
+                    />{'  '}
+                    <img
+                    src={require('../images/agridoctor-wordart.png')}//credit flaticon
+                    width="200"
+                    height="35"
+                    className="d-inline-block align-top"
+                    alt="React Bootstrap logo"
+                    />
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
