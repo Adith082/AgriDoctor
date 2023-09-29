@@ -42,7 +42,7 @@ const NavbarA = () => {
     return (
         <div className='p-3'>
             <Navbar collapseOnSelect expand="lg" className="bg-dark navbar-dark rounded">
-            <Container>
+            <Container fluid style={{paddingLeft: '4vw', paddingRight: '4vw'}}>
                 <Navbar.Brand href="/home">
                     <img
                     src={require('../images/agridoctor-logo1.png')}//credit flaticon

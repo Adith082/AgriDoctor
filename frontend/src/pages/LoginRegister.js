@@ -150,8 +150,10 @@ function LoginRegister() {
 
       axios.post("https://agridoctorbackend-production.up.railway.app/api/auth/login", {username:email, password:password}, { headers })
       .then(response => {
-        // console.log('Response:', response.data);
-        console.log(response.data.token);
+        if(!response.data.token){
+          toast.warn(isEN ? "Wrong e-mail or password" : "ভুল ইমেইল অথবা পাসওয়ার্ড");
+          return;
+        }
         setToken(response.data.token);
         navigate("/home");
         toast.success(isEN ? "Login Success!" : "লগইন সফল!");
