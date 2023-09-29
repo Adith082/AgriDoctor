@@ -15,12 +15,14 @@ import Card from 'react-bootstrap/Card';
 import Image from 'react-bootstrap/Image';
 import LanguageSelector from './LanguageSelector';
 import { LanguageContext } from '../contexts/LanguageContext';
+import { LoginContext } from '../contexts/LoginContext';
 
 const NavbarG = ({currentPage, walletBalance}) => {
 
     const navigate = useNavigate();
 
-    const {isEN} = useContext(LanguageContext)
+    const {isEN} = useContext(LanguageContext);
+    const {setToken} = useContext(LoginContext);
 
     const [showModal, setShowModal] = useState(false);
     const [accountNo, setAccountNo] = useState("");
@@ -39,9 +41,10 @@ const NavbarG = ({currentPage, walletBalance}) => {
     const [amountWarn, setAmountWarn] = useState("Field cannot be empty!");
 
     const handleLogout = () => {
-        // This is where you put your custom logout logic
+        //custom logout logic
         navigate('/');
-        toast.warn("Successfully Logged Out!");
+        setToken(null);
+        toast.warn(isEN ? "Successfully Logged Out!" : "সফলভাবে লগ আউট হয়েছে!");
     };
 
     const handleCropPredClick = () => {

@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom';
 import LanguageSelector from './LanguageSelector';
 import { LanguageContext } from '../contexts/LanguageContext';
+import { LoginContext } from '../contexts/LoginContext';
 
 const NavbarA = () => {
 
@@ -16,12 +17,14 @@ const NavbarA = () => {
 
     const navigate = useNavigate();
 
-    const {isEN} = useContext(LanguageContext)
+    const {isEN} = useContext(LanguageContext);
+    const {setToken} = useContext(LoginContext);
 
     const handleLogout = () => {
-        // This is where you put your custom logout logic
-        navigate('/admin-home');
-        toast.warn("Successfully Logged Out!");
+        //custom logout logic
+        navigate('/');
+        setToken(null);
+        toast.warn(isEN ? "Successfully Logged Out!" : "সফলভাবে লগ আউট হয়েছে!");
     };
 
     const handleCropPredClick = () => {
