@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,7 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api")
 
 public class FeedBackControllers {
 	
@@ -52,7 +53,7 @@ public class FeedBackControllers {
 	
 	
 	// get all feedbacks by user
-
+         
 		@GetMapping("/user/{userId}/feedbacks")
 		public ResponseEntity<List<FeedBackDto>> getPostsByUser(@PathVariable Integer userId) {
 
@@ -64,7 +65,7 @@ public class FeedBackControllers {
 		
 		
 		// get all feedbacks
-
+		@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 		@GetMapping("/feedbacks")
 		public ResponseEntity <List<FeedBackDto>> getAllFeedBack(){
 			List <FeedBackDto> allFeedBack = this.feedBackService.getAllFeedBack();

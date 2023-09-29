@@ -25,7 +25,7 @@ public class UserDto {
 	private String name;
 	
 	@NotEmpty
-	@Size(min = 5, max = 11, message = "Password must be minimum of 5 chars and maximum of 11 chars")
+	@Size(min = 5, max = 50, message = "Password must be minimum of 5 chars and maximum of 11 chars")
 	//@Pattern(regexp = )
 	private String password;
 	
