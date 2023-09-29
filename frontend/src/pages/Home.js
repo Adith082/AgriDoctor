@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import "./Home.css"
 import NavbarG from '../components/NavbarG'
 import Card from 'react-bootstrap/Card';
@@ -8,12 +8,18 @@ import Col from 'react-bootstrap/Col';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
+import { LanguageContext } from '../contexts/LanguageContext';
+import { toast } from 'react-toastify';
+import { LoginContext } from '../contexts/LoginContext';
 
 function Home() {
 
   const [walletBalance, setWalletBalance] = useState(0);
 
   const navigate = useNavigate();
+
+  const {token} = useContext(LoginContext);
+  const {isEN} = useContext(LanguageContext)
 
   useEffect(() => {
     // Define a function to fetch the wallet balance
@@ -27,9 +33,18 @@ function Home() {
       }
     };
 
+    //checking the existence of token
+    const checkToken = () => {
+      if(!token){
+        navigate("/");
+        toast.warn(isEN ? "Login First!" : "প্রথমে লগ-ইন করুন!");
+      }
+    }
+
+    checkToken();
     // Call the function to fetch wallet balance when the component mounts
     fetchWalletBalance();
-  }, []);
+  }, [token, isEN, navigate]);
 
   const handleCropPredict = (e) => {
     navigate('/crop-predict');

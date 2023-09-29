@@ -7,14 +7,17 @@ import DiseasePredict from "./pages/DiseasePredict"
 import AdminHome from "./pages/AdminHome";
 import { useState } from "react";
 import { LanguageContext } from "./contexts/LanguageContext";
+import { LoginContext } from "./contexts/LoginContext";
 
 function App() {
 
   const [isEN, setIsEN] = useState(true);
+  const [token, setToken] = useState(null);
 
   return (
     <div>
       <LanguageContext.Provider value={{isEN, setIsEN}}>
+      <LoginContext.Provider value={{token, setToken}}>
         <Routes>
           <Route
             path="/"
@@ -58,6 +61,7 @@ function App() {
             }
           />
         </Routes>
+      </LoginContext.Provider>
       </LanguageContext.Provider>
     </div>
   );
