@@ -18,7 +18,7 @@ function LoginRegister() {
   const navigate = useNavigate();
 
   const {isEN} = useContext(LanguageContext);
-  const {setToken, setWalletBalance, setUid} = useContext(LoginContext);
+  const {setToken, setWalletBalance, setUid, setRole} = useContext(LoginContext);
 
   const [firstName, setFirstName] = useState(""); // State for First Name
   const [lastName, setLastName] = useState(""); // State for Last Name
@@ -172,9 +172,29 @@ function LoginRegister() {
 
   const handleAdminLoginClick = () => {
     if(emailValid && passwordValid){
-      toast.success("Ho Ho Ho! Login Success!")
+
+      const headers = {};
+
+      axios.post("https://agridoctorbackend-production.up.railway.app/api/auth/login", {username:email, password:password}, { headers })
+      .then(response => {
+        if(!response.data.token){
+          toast.warn(isEN ? "Wrong e-mail or password" : "ভুল ইমেইল অথবা পাসওয়ার্ড");
+          return;
+        }
+        setToken(response.data.token);
+        setWalletBalance(response.data.user.wallet);
+        setUid(response.data.user.id);
+        setRole(response.data.user.roles[0].name);
+        navigate("/admin-home");
+        toast.success(isEN ? "Login Success!" : "লগইন সফল!");
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        toast.warning(isEN ? "Wrong e-mail or password" : "ভুল ইমেইল অথবা পাসওয়ার্ড")
+      });
+
     }else{
-      toast.warn("RIP!")
+      toast.warn(isEN ? "Incorrect format of E-mail/password!" : "ইমেইল/পাসওয়ার্ডের সঠিক ফরম্যাট নয়!")
     }
   }
 

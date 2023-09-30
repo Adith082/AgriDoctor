@@ -1,12 +1,41 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import "./AdminHome.css"
 import NavbarA from '../components/NavbarA'
 import FeedbackA from '../components/FeedbackA.js'
 import Button from 'react-bootstrap/Button';
+import { LanguageContext } from '../contexts/LanguageContext';
+import { LoginContext } from '../contexts/LoginContext';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 function AdminHome() {
 
   const [image,setImage] = useState(null);
+
+  const {isEN} = useContext(LanguageContext);
+  const {token, role} = useContext(LoginContext);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    //checking the existence of token
+    const checkToken = () => {
+      if(!token){
+        navigate("/");
+        toast.warn(isEN ? "Login First!" : "প্রথমে লগ-ইন করুন!");
+      }
+    }
+
+    const checkRole = () => {
+      if(role!=="ROLE_ADMIN"){
+        navigate("/");
+        toast.warn(isEN ? "Unauthorized Access!" : "অননুমোদিত অ্যাক্সেস!");
+      }
+    }
+
+    checkToken();
+    checkRole();
+  }, [token, isEN, navigate, role]);
 
   const handleImageUpload = (e) => {
     // setDiseaseMessage(defaultDiseaseMessage);

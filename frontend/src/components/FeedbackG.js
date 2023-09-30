@@ -31,6 +31,7 @@ const FeedbackG = ({feedbackTitle, predictionMessage, show}) => {
         }, { headers })
         .then(response => {
             console.log(response.data);
+            setShowSuccress(true);
             toast.success(isEN ? "Successful!" : "সফল!");
         })
         .catch(error => {
