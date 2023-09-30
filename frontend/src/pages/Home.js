@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import "./Home.css"
 import NavbarG from '../components/NavbarG'
 import Card from 'react-bootstrap/Card';
@@ -14,24 +14,12 @@ import { LoginContext } from '../contexts/LoginContext';
 
 function Home() {
 
-  const [walletBalance, setWalletBalance] = useState(0);
-
   const navigate = useNavigate();
 
   const {token} = useContext(LoginContext);
   const {isEN} = useContext(LanguageContext)
 
   useEffect(() => {
-    // Define a function to fetch the wallet balance
-    const fetchWalletBalance = async () => {
-      try {
-        const response = await fetch('API_ENDPOINT'); // Replace with your API endpoint
-        const data = await response.json();
-        setWalletBalance(data.walletBalance);
-      } catch (error) {
-        console.error('Error fetching wallet balance:', error);
-      }
-    };
 
     //checking the existence of token
     const checkToken = () => {
@@ -42,8 +30,6 @@ function Home() {
     }
 
     checkToken();
-    // Call the function to fetch wallet balance when the component mounts
-    fetchWalletBalance();
   }, [token, isEN, navigate]);
 
   const handleCropPredict = (e) => {
@@ -61,18 +47,19 @@ function Home() {
   return (
     <div>
     <div className='home-container'>
-        <NavbarG currentPage={0} walletBalance={walletBalance}/>
+        <NavbarG currentPage={0}/>
         <Container className="mt-4 d-flex justify-content-center align-items-center vh-80">
             <Row xs={1} md={2} lg={3} className="g-4">
                 <Col>
                 <Card className="h-100 shadow">
                     <Card.Img variant="top" className='card-image' src={require('../images/green-sprouts-dark-soil-against-blurred-background-symbolizing-concept-growth-potential.jpg')}/> {/*Image Credit: Image By svstudioarton Freepik*/}
                     <Card.Body>
-                    <Card.Title>Crop Planting Recommendations</Card.Title>
+                    <Card.Title>{isEN ? "Crop Planting Recommendations" : "ফসল চাষের প্রস্তাবনা"}</Card.Title>
                     <Card.Text>
-                        Gives suggestion on which crop to grow based on provided soil-data like: Nitrogen, Phosphorus, Potassium level of the soil and Humidity, Rainfall, and Temperature level of the weather.
+                    {isEN ? "Get suggestions on which crop to grow based on provided soil data such as Nitrogen, Phosphorus, and Potassium levels, as well as weather conditions including Humidity, Rainfall, and Temperature."
+                    :"নাইট্রোজেন, ফসফরাস, এবং পটাসিয়ামের স্তরের পাশাপাশি আর্দ্রতা, বৃষ্টিপাত এবং তাপমাত্রা সহ আবহাওয়ার অবস্থার উপর ভিত্তি করে কোন ফসল রোপণ করতে হবে তার পরামর্শ পান।"}
                     </Card.Text>
-                    <Button className="custom-button" onClick={handleCropPredict}>Take There!</Button>
+                    <Button className="custom-button" onClick={handleCropPredict}>{isEN ? "Take Me There!" : "সেখানে নিয়ে চলুন!"}</Button>
                     </Card.Body>
                 </Card>
                 </Col>
@@ -80,11 +67,14 @@ function Home() {
                 <Card className="h-100 shadow">
                     <Card.Img variant="top" className='card-image' src={require('../images/granulated-fertilize.jpg')}/> {/*Image Credit: Image by Zbynek Pospisil*/}
                     <Card.Body>
-                    <Card.Title>Fertilizer Recommendation</Card.Title>
+                    <Card.Title>{isEN ? "Fertilizer Recommendation" : "উর্বরক পরামর্শ"}</Card.Title>
                     <Card.Text>
-                        Based on provided soil nutrient levels and based on the plant you are growing, get recommendation on the level of nutrient of the soil and recommended fertilizers can be used to get best crop growth.
+                    {isEN
+                      ? "Based on the provided soil nutrient levels and the type of plant you are growing, you can receive recommendations for adjusting the soil nutrient levels and using specific fertilizers to achieve optimal crop growth."
+                      : "প্রদত্ত মাটির পুষ্টির স্তরের উপর ভিত্তি করে এবং আপনি যে উদ্ভিদটি বৃদ্ধি করছেন তার উপর ভিত্তি করে, মাটির পুষ্টির স্তর সমর্থন পান এবং সর্বোত্তম ফসল বৃদ্ধির জন্য সার ব্যবহারের সুপারিশ পান।"
+                    }
                     </Card.Text>
-                    <Button className="custom-button" onClick={handleFertPredict}>Take There!</Button>
+                    <Button className="custom-button" onClick={handleFertPredict}>{isEN ? "Take Me There!" : "সেখানে নিয়ে চলুন!"}</Button>
                     </Card.Body>
                 </Card>
                 </Col>
@@ -92,11 +82,14 @@ function Home() {
                 <Card className="h-100 shadow">
                     <Card.Img variant="top" src={require('../images/flat-lay-dry-leaves.jpg')} />{/*Image Credit: Image by Freepik*/}
                     <Card.Body>
-                    <Card.Title>Crop Disease Detection</Card.Title>
+                    <Card.Title>{isEN? "Crop Disease Detection": "ফসলে রোগ পরিচিতি"}</Card.Title>
                     <Card.Text>
-                        Detects the the disease a plant is affected with provided the image of the leaf of the crop. It also provides the cause of the disease with necessary description.
+                      {isEN
+                      ? "Detects the disease a plant is affected with provided the image of the leaf of the crop. It also provides the cause of the disease with necessary description."
+                      : "ফসলের পাতার ছবি দেওয়া হলে এটি পাতার উপর আসন্ন রোগটি চিহ্নিত করে। এছাড়া, রোগের কারণ এবং প্রয়োজনীয় বর্ণনা সরবরাহ করে।"
+                      }
                     </Card.Text>
-                    <Button className="custom-button" onClick={handleDiseasePredict}>Take There!</Button>
+                    <Button className="custom-button" onClick={handleDiseasePredict}>{isEN ? "Take Me There!" : "সেখানে নিয়ে চলুন!"}</Button>
                     </Card.Body>
                 </Card>
                 </Col>

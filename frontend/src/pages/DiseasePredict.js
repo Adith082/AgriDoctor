@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import NavbarG from '../components/NavbarG'
 import "./DiseasePredict.css"
 import Button from 'react-bootstrap/Button';
@@ -9,12 +9,20 @@ import Collapse from 'react-bootstrap/Collapse';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Card from 'react-bootstrap/Card';
+import { LanguageContext } from '../contexts/LanguageContext';
+import { LoginContext } from '../contexts/LoginContext';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function DiseasePredict() {
 
   const defaultDiseaseMessage = "Disease not yet identiied. Click the button below to get started."
-  
-  const [walletBalance, setWalletBalance] = useState(0);
+
+  const {isEN} = useContext(LanguageContext);
+  const {token, uid, setWalletBalance} = useContext(LoginContext);
+
+  const navigate = useNavigate();
+
   const [image, setImage] = useState(null);
   const [isDraggedOver, setIsDraggedOver] = useState(false);
   const [diseaseMessage, setDiseaseMessage] = useState(defaultDiseaseMessage);
@@ -24,20 +32,16 @@ function DiseasePredict() {
   const [preventionDisease, setPreventionDisease] = useState("Disease prevention goes here!")
 
   useEffect(() => {
-    // Define a function to fetch the wallet balance
-    const fetchWalletBalance = async () => {
-      try {
-        const response = await fetch('API_ENDPOINT'); // Replace with your API endpoint
-        const data = await response.json();
-        setWalletBalance(data.walletBalance);
-      } catch (error) {
-        console.error('Error fetching wallet balance:', error);
+    //checking the existence of token
+    const checkToken = () => {
+      if(!token){
+        navigate("/");
+        toast.warn(isEN ? "Login First!" : "প্রথমে লগ-ইন করুন!");
       }
-    };
+    }
 
-      // Call the function to fetch wallet balance when the component mounts
-      fetchWalletBalance();
-  }, []);
+    checkToken();
+  }, [token, isEN, navigate]);
 
   const handleImageUpload = (e) => {
     setDiseaseMessage(defaultDiseaseMessage);
@@ -71,10 +75,61 @@ function DiseasePredict() {
     }
   }
 
-  const handlePredictionClick = (e) => {
-    setCauseDisease("");
-    setPreventionDisease("");
-    toast.success("Prediction Clicked");
+  const handlePredictionClick = async (e) => {
+    if(image){
+      if(token){
+        const headers = {
+            Authorization: "Bearer "+token,
+            'Content-Type': 'multipart/form-data'
+        }
+
+        const data = new FormData();
+        data.append("input_data",image);
+        data.append("uid",uid)
+
+        axios.post("https://agridoctorbackend-production.up.railway.app/api/services/crop-disease-detection", data , { headers })
+        .then(response => {
+            if(response.data.message==="No currency left. Cannot Provide Service."){
+              toast.warn(isEN ? "Not enough balance. Please recharge your wallet balance!" : "যালেন্স পর্যাপ্ত নয়। দয়া করে আপনার ওয়ালেট ব্যালেন্স চার্জ করুন!");
+              return;
+            }
+            console.log(response.data);
+            setWalletBalance(response.data.wallet);
+            toast.success(isEN ? "Successful!" : "সফল!");
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            toast.warning(isEN ? "Something went wrong! Try again later." : "কিছু ভুল হয়েছে! পরে আবার চেষ্টা করুন।");
+        });
+
+        const formData = new FormData();
+    formData.append('input_data', image);
+    formData.append('uid', uid);
+        try {
+          const response = await fetch('https://agridoctorbackend-production.up.railway.app/api/services/crop-disease-detection', {
+            method: 'POST',
+            body: formData,
+            headers: { headers }
+          });
+    
+          if (response.ok) {
+            // Request was successful
+            const responseData = await response.json();
+            console.log(responseData);
+          } else {
+            // Handle error response
+            console.error('Error:', response.status);
+          }
+        } catch (error) {
+          // Handle network or other errors
+          console.error('Error:', error);
+        }
+
+
+      }
+    }else{
+      toast.warn(isEN ? "Fields contain invalid inputs!" : "ক্ষেত্রগুলি অবৈধ ইনপুট ধারণ করে!");
+    }
   }
 
   const handleFeedbackClick = (e) => {
@@ -83,7 +138,7 @@ function DiseasePredict() {
 
   return (
     <div className='disease-container'>
-      <NavbarG currentPage={3} walletBalance={walletBalance}/>
+      <NavbarG currentPage={3}/>
       <div className='duo-container'>
         <div className='image-upload'>
           <h1 className='image-upload-title-ex'>Crop leaf Image</h1>

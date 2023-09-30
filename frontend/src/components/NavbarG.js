@@ -16,13 +16,14 @@ import Image from 'react-bootstrap/Image';
 import LanguageSelector from './LanguageSelector';
 import { LanguageContext } from '../contexts/LanguageContext';
 import { LoginContext } from '../contexts/LoginContext';
+import axios from 'axios';
 
-const NavbarG = ({currentPage, walletBalance}) => {
+const NavbarG = ({currentPage}) => {
 
     const navigate = useNavigate();
 
     const {isEN} = useContext(LanguageContext);
-    const {setToken} = useContext(LoginContext);
+    const {token, setToken, walletBalance, setWalletBalance, uid} = useContext(LoginContext);
 
     const [showModal, setShowModal] = useState(false);
     const [accountNo, setAccountNo] = useState("");
@@ -79,25 +80,46 @@ const NavbarG = ({currentPage, walletBalance}) => {
         if (accountNo === "") {
             setAccountNoValid(false);
             setAccountNoWarn("Field cannot be empty!");
+        }else{
+            setAccountNoValid(true);
         }
 
         if (cvc === "") {
             setCvcValid(false);
             setCvcWarn("Field cannot be empty!");
-        }
+        }else setCvcValid(true);
 
         if (date === "") {
             setDateValid(false);
             setDateWarn("Field cannot be empty!");
-        }
+        }else setDateValid(true);
 
         if (amount === "") {
             setAmountValid(false);
             setAmountWarn("Field cannot be empty!");
-        }
+        }else setAmount(true);
 
-        if(accountNoValid&&cvcValid&&dateValid&&amountValid)
-            toast.success("Wallet balance recharge successful!");
+        if(accountNoValid&&cvcValid&&dateValid&&amountValid&&(parseFloat(amount.toString())>=0)){
+            if(token){
+
+                const headers = {
+                    Authorization: "Bearer "+token
+                }
+
+                axios.put("https://agridoctorbackend-production.up.railway.app/api/users/"+uid+"/wallet-add/"+amount, null, { headers })
+                .then(response => {
+                    setWalletBalance(response.data.wallet);
+                    setShowModal(false);
+                    toast.success(isEN ? "Wallet balance recharge successful!" : "ওয়ালেট ব্যালেন্স পুনরারম্ভ সফল!");
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    toast.warning(isEN ? "Something went wrong! Try again later." : "কিছু ভুল হয়েছে! পরে আবার চেষ্টা করুন।");
+                });
+            }
+        }else{
+            toast.warn(isEN ? "Fields contain invalid inputs!" : "ক্ষেত্রগুলি অবৈধ ইনপুট ধারণ করে!");
+        }
     }
 
     return (
@@ -237,7 +259,7 @@ const NavbarG = ({currentPage, walletBalance}) => {
                         type="number"
                         placeholder="Amount to be added"
                         value={amount}
-                        onChange={(e)=>{setAmount(e.target.value)}}
+                        onChange={(e)=>{setAmount(parseFloat(e.target.value)>=0?e.target.value:"0")}}
                         />
                         <Collapse in={!amountValid}>
                         <div id="example-collapse-text">

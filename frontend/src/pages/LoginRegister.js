@@ -18,7 +18,7 @@ function LoginRegister() {
   const navigate = useNavigate();
 
   const {isEN} = useContext(LanguageContext);
-  const {setToken} = useContext(LoginContext);
+  const {setToken, setWalletBalance, setUid} = useContext(LoginContext);
 
   const [firstName, setFirstName] = useState(""); // State for First Name
   const [lastName, setLastName] = useState(""); // State for Last Name
@@ -155,12 +155,14 @@ function LoginRegister() {
           return;
         }
         setToken(response.data.token);
+        setWalletBalance(response.data.user.wallet);
+        setUid(response.data.user.id);
         navigate("/home");
         toast.success(isEN ? "Login Success!" : "লগইন সফল!");
       })
       .catch(error => {
         console.error('Error:', error);
-        toast.warning(isEN ? "Something went wrong! Try again later." : "কিছু ভুল হয়েছে! পরে আবার চেষ্টা করুন।")
+        toast.warning(isEN ? "Wrong e-mail or password" : "ভুল ইমেইল অথবা পাসওয়ার্ড")
       });
 
     }else{

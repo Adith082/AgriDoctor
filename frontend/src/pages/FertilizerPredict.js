@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import NavbarG from '../components/NavbarG'
 import "./FertilizerPredict.css"
 import Button from 'react-bootstrap/Button';
@@ -11,10 +11,39 @@ import Card from 'react-bootstrap/Card';
 import FeedbackG from '../components/FeedbackG';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-import {SupportedCrops} from '../components/SupportedCrops';
+import {SupportedCrops, SupportedCropsBengali} from '../components/SupportedCrops';
+import { LanguageContext } from '../contexts/LanguageContext';
+import { LoginContext } from '../contexts/LoginContext';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+// function NewlineText({ text }) {
+//   const newText = text.split('\n').map((str, index) => (
+//     <React.Fragment key={index}>
+//       {str}
+//       <br />
+//     </React.Fragment>
+//   ));
+//   return <>{newText}</>;
+// }
+
+function NewlineText({ text }) {
+  const newText = text.replace(/\n{2,}/g, '\n').split('\n').map((str, index) => (
+    <React.Fragment key={index}>
+      {str}
+      <br />
+    </React.Fragment>
+  ));
+  return <>{newText}</>;
+}
+
 
 function FertilizerPredict() {
-  const [walletBalance, setWalletBalance] = useState(0);
+
+  const {isEN} = useContext(LanguageContext);
+  const {token, uid, setWalletBalance} = useContext(LoginContext);
+
+  const navigate = useNavigate();
 
   const [nitrogen, setNitrogen] = useState(0)
   const [phosphorus, setPhosphorus] = useState(0)
@@ -26,23 +55,25 @@ function FertilizerPredict() {
   const [potassiumValid, setPotassiumValid] = useState(true)
 
   const [predictedCrop, setPredictedCrop] = useState("")
+  const [predictedCropB, setPredictedCropB] = useState("")
   const [cropValid, setCropValid] = useState(true)
 
   useEffect(() => {
-    // Define a function to fetch the wallet balance
-    const fetchWalletBalance = async () => {
-      try {
-        const response = await fetch('API_ENDPOINT'); // Replace with your API endpoint
-        const data = await response.json();
-        setWalletBalance(data.walletBalance);
-      } catch (error) {
-        console.error('Error fetching wallet balance:', error);
+    //checking the existence of token
+    const checkToken = () => {
+      if(!token){
+        navigate("/");
+        toast.warn(isEN ? "Login First!" : "প্রথমে লগ-ইন করুন!");
       }
-    };
+    }
 
-      // Call the function to fetch wallet balance when the component mounts
-      fetchWalletBalance();
-  }, []);
+    checkToken();
+  }, [token, isEN, navigate]);
+
+  function getFirstSentence(text) {
+    const firstSentence = text.match(/^[^.!?]+[.!?]/);
+    return firstSentence ? firstSentence[0] : '';
+  }
 
   const handleCropPredClick = (e) => {
     if(nitrogen==="") setNitrogenValid(false);
@@ -54,70 +85,98 @@ function FertilizerPredict() {
     if(crop==="") setCropValid(false);
     else setCropValid(true);
 
-    if(nitrogenValid && phosphorusValid && potassiumValid &&setCropValid){
-      toast.success("handle crop clicked");
+    if(nitrogenValid && phosphorusValid && potassiumValid &&cropValid){
+      if(token){
+        const headers = {
+            Authorization: "Bearer "+token
+        }
+        axios.post("https://agridoctorbackend-production.up.railway.app/api/services/crop-fertilizer-recommendation", {
+          "nitrogen": parseInt(nitrogen),
+          "phosphorous": parseInt(phosphorus),
+          "pottasiam": parseInt(potassium),
+          "cropName": crop,
+          "uid": uid
+        }, { headers })
+        .then(response => {
+            if(response.data.message==="No currency left. Cannot Provide Service."){
+              toast.warn(isEN ? "Not enough balance. Please recharge your wallet balance!" : "যালেন্স পর্যাপ্ত নয়। দয়া করে আপনার ওয়ালেট ব্যালেন্স চার্জ করুন!");
+              return;
+            }
+            console.log(response.data);
+            setWalletBalance(response.data.wallet);
+            setPredictedCrop(response.data.recommendationEnglish);
+            setPredictedCropB(response.data.recommendationBengali);
+            toast.success(isEN ? "Successful!" : "সফল!");
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            toast.warning(isEN ? "Something went wrong! Try again later." : "কিছু ভুল হয়েছে! পরে আবার চেষ্টা করুন।");
+        });
+      }
+    }else{
+      toast.warn(isEN ? "Fields contain invalid inputs!" : "ক্ষেত্রগুলি অবৈধ ইনপুট ধারণ করে!");
     }
   }
 
   return (
     <div className='fertilizer-predict-container'>
-      <NavbarG currentPage={2} walletBalance={walletBalance}/>
+      <NavbarG currentPage={2}/>
       <div className='crop-duo-container'>
         
         <div className='input-container'>
           <div className="input-section">
 
-            <h1 className='input-title'>Soil Data</h1>
+            <h1 className='input-title'>{isEN? "Soil Data": "মাটি তথ্য"}</h1>
             <InputGroup className="mb-3">
-              <InputGroup.Text  className="input-group-text-dark">Nitrogen(ppm)&nbsp;&nbsp;&nbsp;&nbsp;</InputGroup.Text>
+              <InputGroup.Text  className="input-group-text-dark">{isEN ? "Nitrogen (ppm)" : "নাইট্রোজেন (ppm)"}&nbsp;&nbsp;&nbsp;&nbsp;</InputGroup.Text>
               <Form.Control
               type="number"
-              placeholder="Nitogen(N) amount in soil(Unit: ppm)"
+              placeholder={isEN ? "Nitrogen(N) amount in soil (Unit: ppm)" : "মাটিতে নাইট্রোজেন(N) পরিমাণ (একক: ppm)"}
               value={nitrogen}
               onChange={(e)=>{setNitrogen(e.target.value);setPredictedCrop("");}}
               />
               <Collapse in={!nitrogenValid}>
               <div id="example-collapse-text">
                   <Card body className='warn-card custom-card'>
-                    Field cannot be kept empty!
+                  {isEN ? "Field cannot be kept empty!" : "ক্ষেত্র ফাঁকা রাখা যাবে না!"}
                   </Card>
               </div>
               </Collapse>
             </InputGroup>
             <InputGroup className="mb-3">
-              <InputGroup.Text  className="input-group-text-dark">Phosphorus(ppm)</InputGroup.Text>
+              <InputGroup.Text  className="input-group-text-dark">{isEN ? "Phosphorus(ppm)" : "ফসফরাস(ppm)"}</InputGroup.Text>
               <Form.Control
               type="number"
-              placeholder="Phosphorus(P) amount in soil(Unit: ppm)"
+              placeholder={isEN ? "Phosphorus(P) amount in soil(Unit: ppm)" : "মাটির ফসফরাস(P) পরিমাণ (একক: ppm)"}
               value={phosphorus}
               onChange={(e)=>{setPhosphorus(e.target.value);setPredictedCrop("");}}
               />
               <Collapse in={!phosphorusValid}>
               <div id="example-collapse-text">
                   <Card body className='warn-card custom-card'>
-                    Field cannot be kept empty!
+                    {isEN ? "Field cannot be kept empty!" : "ক্ষেত্র ফাঁকা রাখা যাবে না!"}
                   </Card>
               </div>
               </Collapse>
             </InputGroup>
             <InputGroup className="mb-3">
-              <InputGroup.Text  className="input-group-text-dark">Potassium(ppm)&nbsp;&nbsp;</InputGroup.Text>
+              <InputGroup.Text  className="input-group-text-dark">{isEN ? "Potassium(ppm)" : "পটাশিয়াম(ppm)"}&nbsp;&nbsp;</InputGroup.Text>
               <Form.Control
               type="number"
-              placeholder="Potassium(K) amount in soil(Unit: ppm)"
+              placeholder={isEN ? "Potassium(K) amount in soil (Unit: ppm)" : "মাটির পোটাশিয়াম(K) পরিমাণ (একক: ppm)"}
               value={potassium}
               onChange={(e)=>{setPotassium(e.target.value);setPredictedCrop("");}}
               />
               <Collapse in={!potassiumValid}>
               <div id="example-collapse-text">
                   <Card body className='warn-card custom-card'>
-                    Field cannot be kept empty!
+                  {isEN ? "Field cannot be kept empty!" : "ক্ষেত্র ফাঁকা রাখা যাবে না!"}
                   </Card>
               </div>
               </Collapse>
             </InputGroup>
             <InputGroup className="mb-3">
-              <InputGroup.Text  className="input-group-text-dark">Crop Grown</InputGroup.Text>
+              <InputGroup.Text  className="input-group-text-dark">{isEN ? "Crop Grown" : "উৎপাদিত ফসল"}</InputGroup.Text>
               <Form.Control
               type="text"
               placeholder="Select the crop you are growing or will grow"
@@ -126,23 +185,25 @@ function FertilizerPredict() {
               readOnly
               />
               <DropdownButton
-                variant="outline-secondary"
+                variant="outline-light"
                 title="Select"
                 id="input-group-dropdown-1"
               >
-              {SupportedCrops.map((plant, index) => (
-                <Dropdown.Item 
-                  key={index} 
-                  onClick={() => setCrop(plant)}
-                >
-                  {plant}
-                </Dropdown.Item>
-              ))}
+                <div style={{ maxHeight: '30vw', overflowY: 'auto' }}>
+                {SupportedCrops.map((plant, index) => (
+                  <Dropdown.Item 
+                    key={index} 
+                    onClick={() => setCrop(plant)}
+                  >
+                    {plant}{"  "+SupportedCropsBengali[index]}
+                  </Dropdown.Item>
+                ))}
+                </div>
               </DropdownButton>
               <Collapse in={!cropValid}>
               <div id="example-collapse-text">
                   <Card body className='warn-card custom-card'>
-                    Field cannot be kept empty!
+                  {isEN ? "Field cannot be kept empty!" : "ক্ষেত্র ফাঁকা রাখা যাবে না!"}
                   </Card>
               </div>
               </Collapse>
@@ -154,17 +215,17 @@ function FertilizerPredict() {
 
         <div className='prediction-container'>
           <div className="prediction-section">
-            <h1 className='input-title'>Fertilizer Recommendation</h1>
+            <h1 className='input-title'>{isEN?"Fertilizer Recommendation":"সার সুপারিশ"}</h1>
             {predictedCrop === "" ? (
-              <h3>Click on the button left to get recommendation</h3>
+              <h3>{isEN?"Click on the button left to get recommendation":"সুপারিশ পেতে বাম বোতামে ক্লিক করুন"}</h3>
             ) : (
-              <h3>You should grow <strong>{predictedCrop}</strong> in your soil</h3>
+              <h3>{isEN?<NewlineText text={predictedCrop}/>:<NewlineText text={predictedCropB}/>}</h3>
             )}
           </div>
           {predictedCrop === "" ? (
               <div></div>
             ) : (
-              <FeedbackG feedbackTitle={"Recommended Fertilizer:"} predictionMessage={predictedCrop} show={true}/>
+              <FeedbackG feedbackTitle={"Recommended Fertilizer:"} predictionMessage={getFirstSentence(predictedCrop)} show={true}/>
             )}
         </div>
 

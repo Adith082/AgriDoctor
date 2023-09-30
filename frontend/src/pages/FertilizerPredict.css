@@ -11,6 +11,12 @@
     display: flex;
 }
 
+@media (max-width: 767px) {
+    .crop-duo-container {
+        flex-direction: column; /* Change to vertical arrangement for mobile screens */
+    }
+}
+
 .input-container{
     width: 50%;
     margin: auto;
@@ -44,6 +50,7 @@
     justify-content: center;
     align-items: center;
     height: 80vh;
+    overflow: auto;
 }
 
 .prediction-section{
@@ -61,6 +68,8 @@
     padding-bottom: 1rem;
     height: fit-content;
     margin: 0% 0% 0% 0%;
+    max-height: 40vw;
+    overflow: auto;
 }
 
 .input-title{

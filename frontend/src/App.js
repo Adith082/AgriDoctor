@@ -13,11 +13,13 @@ function App() {
 
   const [isEN, setIsEN] = useState(true);
   const [token, setToken] = useState(null);
+  const [walletBalance, setWalletBalance] = useState(null);
+  const [uid, setUid] = useState(null);
 
   return (
     <div>
       <LanguageContext.Provider value={{isEN, setIsEN}}>
-      <LoginContext.Provider value={{token, setToken}}>
+      <LoginContext.Provider value={{token, setToken, walletBalance, setWalletBalance, uid, setUid}}>
         <Routes>
           <Route
             path="/"
