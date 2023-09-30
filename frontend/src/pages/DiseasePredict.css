@@ -19,7 +19,9 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 80vh;
+    max-height: 80vh;
+    overflow: auto;
+    padding-top: 15vw;
 }
 
 .disease-container{

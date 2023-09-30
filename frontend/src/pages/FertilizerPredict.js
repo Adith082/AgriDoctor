@@ -17,18 +17,8 @@ import { LoginContext } from '../contexts/LoginContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-// function NewlineText({ text }) {
-//   const newText = text.split('\n').map((str, index) => (
-//     <React.Fragment key={index}>
-//       {str}
-//       <br />
-//     </React.Fragment>
-//   ));
-//   return <>{newText}</>;
-// }
-
 function NewlineText({ text }) {
-  const newText = text.replace(/\n{2,}/g, '\n').split('\n').map((str, index) => (
+  const newText = text.split('\n').map((str, index) => (
     <React.Fragment key={index}>
       {str}
       <br />
@@ -36,7 +26,6 @@ function NewlineText({ text }) {
   ));
   return <>{newText}</>;
 }
-
 
 function FertilizerPredict() {
 

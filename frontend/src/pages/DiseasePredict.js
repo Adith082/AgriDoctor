@@ -28,8 +28,14 @@ function DiseasePredict() {
   const [diseaseMessage, setDiseaseMessage] = useState(defaultDiseaseMessage);
 
   const [feedbackMessage, setFeedbackMessage] = useState("")
-  const [causeDisease, setCauseDisease] = useState("Disease cause goes here!")
-  const [preventionDisease, setPreventionDisease] = useState("Disease prevention goes here!")
+  const [causeDisease, setCauseDisease] = useState("")
+  const [preventionDisease, setPreventionDisease] = useState("")
+  const [plant, setPlant] = useState("")
+
+  const [diseaseMessageB, setDiseaseMessageB] = useState(defaultDiseaseMessage);
+  const [causeDiseaseB, setCauseDiseaseB] = useState("")
+  const [preventionDiseaseB, setPreventionDiseaseB] = useState("")
+  const [plantB, setPlantB] = useState("")
 
   useEffect(() => {
     //checking the existence of token
@@ -95,36 +101,23 @@ function DiseasePredict() {
             }
             console.log(response.data);
             setWalletBalance(response.data.wallet);
+
+            setPlant(response.data.cropNameEn);
+            setDiseaseMessage(response.data.diseaseNameEn);
+            setCauseDisease(response.data.causeOfDiseaseEn);
+            setPreventionDisease(response.data.preventionOrCureEn);
+
+            setPlantB(response.data.cropNameBn);
+            setDiseaseMessageB(response.data.diseaseNameBn);
+            setCauseDiseaseB(response.data.causeOfDiseaseBn);
+            setPreventionDiseaseB(response.data.preventionOrCureBn);
+
             toast.success(isEN ? "Successful!" : "সফল!");
         })
         .catch(error => {
             console.error('Error:', error);
             toast.warning(isEN ? "Something went wrong! Try again later." : "কিছু ভুল হয়েছে! পরে আবার চেষ্টা করুন।");
         });
-
-        const formData = new FormData();
-    formData.append('input_data', image);
-    formData.append('uid', uid);
-        try {
-          const response = await fetch('https://agridoctorbackend-production.up.railway.app/api/services/crop-disease-detection', {
-            method: 'POST',
-            body: formData,
-            headers: { headers }
-          });
-    
-          if (response.ok) {
-            // Request was successful
-            const responseData = await response.json();
-            console.log(responseData);
-          } else {
-            // Handle error response
-            console.error('Error:', response.status);
-          }
-        } catch (error) {
-          // Handle network or other errors
-          console.error('Error:', error);
-        }
-
 
       }
     }else{
@@ -177,7 +170,7 @@ function DiseasePredict() {
 
         <div className='identify-disease'>
           <h1 className='image-upload-title-ex'>Identified Disease</h1>
-          <div className='upload-instruct'>{diseaseMessage}</div>
+          <div className='upload-instruct'><strong>Plant: </strong>{plant+"  "}<strong>Disease: </strong>{diseaseMessage}</div>
           <div className='upload-instruct'> <strong>Cause of Disease</strong> <br /> {causeDisease} </div>
           <div className='upload-instruct'> <strong>Prevention of Disease</strong> <br /> {preventionDisease} </div>
           <Button className="prediction-button" onClick={handlePredictionClick}>Identify Disease</Button>
@@ -189,7 +182,7 @@ function DiseasePredict() {
               alt="Uploaded Leaf"
               style={{ maxWidth: '15vw', maxHeight: '15vh', border: "2px solid white" }}
             />
-            <div><strong>Disease Prediction: </strong>{diseaseMessage}</div>{/** Title of the feedback */}
+            <div><strong>Plant: </strong>{plant+"  "}<strong>Disease: </strong>{diseaseMessage}</div>{/** Title of the feedback */}
             <InputGroup className="mb-3">
               <InputGroup.Text  className="input-group-text-dark">Your Feedback</InputGroup.Text>
               <Form.Control
