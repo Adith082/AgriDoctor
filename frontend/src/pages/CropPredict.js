@@ -13,7 +13,7 @@ import { LanguageContext } from '../contexts/LanguageContext';
 import { LoginContext } from '../contexts/LoginContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { SupportedRecommendations, SupportedRecommendationsBengali } from '../components/SupportedCrops';
+import { SupportedCrops, SupportedCropsBengali } from '../components/SupportedCrops';
 
 function CropPredict() {
 
@@ -210,14 +210,14 @@ function CropPredict() {
             ) : (
               <h3>{isEN?"You should grow ":"আপনার মাটিতে "}<strong>{
                 isEN?predictedCrop:
-                SupportedRecommendationsBengali[SupportedRecommendations.findIndex(crop => crop.toLowerCase() === predictedCrop.toLowerCase())]
+                SupportedCropsBengali[SupportedCrops.findIndex(crop => crop.toLowerCase() === predictedCrop.toLowerCase())]
               }</strong>{isEN?" in your soil":" চাষ করতে হবে"}</h3>
             )}
           </div>
           {predictedCrop === "" ? (
               <div></div>
             ) : (
-              <FeedbackG feedbackTitle={"Suggested Crop:"} predictionMessage={predictedCrop} show={true}/>
+              <FeedbackG feedbackTitle={"Suggested Crop: "} predictionMessage={predictedCrop} show={true}/>
             )}
         </div>
 
