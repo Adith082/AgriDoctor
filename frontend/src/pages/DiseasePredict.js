@@ -37,6 +37,8 @@ function DiseasePredict() {
   const [preventionDiseaseB, setPreventionDiseaseB] = useState("")
   const [plantB, setPlantB] = useState("")
 
+  const [showSuccess, setShowSuccress] = useState(false);
+
   useEffect(() => {
     //checking the existence of token
     const checkToken = () => {
@@ -125,8 +127,55 @@ function DiseasePredict() {
     }
   }
 
+  const sendFeedbackImage = (feedbackId) => {
+    if(feedbackMessage!==""){
+      if(token){
+        const headers = {
+          Authorization: "Bearer "+token,
+          'Content-Type': 'multipart/form-data'
+      }
+
+      const data = new FormData();
+      data.append("image",image);
+
+      axios.post("https://agridoctorbackend-production.up.railway.app/api/feedback/image/upload/"+feedbackId, data , { headers })
+        .then(response => {
+            console.log(response.data);
+            setShowSuccress(true);
+            toast.success(isEN ? "Successful!" : "সফল!");
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            toast.warning(isEN ? "Something went wrong! Try again later." : "কিছু ভুল হয়েছে! পরে আবার চেষ্টা করুন।");
+        });
+      }
+    }else{
+      toast.warn(isEN ? "Fields contain invalid inputs!" : "ক্ষেত্রগুলি অবৈধ ইনপুট ধারণ করে!");
+    }
+  }
+
   const handleFeedbackClick = (e) => {
-    toast.success("Feedback Recieved");
+    if(feedbackMessage!==""){
+      if(token){
+        const headers = {
+            Authorization: "Bearer "+token
+        }
+        axios.post("https://agridoctorbackend-production.up.railway.app/api/user/"+uid+"/feedback", {
+          "feedBackTitle":"{Plant and Disease: "+plant+" "+diseaseMessage+"}",
+          "content":feedbackMessage
+        }, { headers })
+        .then(response => {
+            console.log(response.data);
+            sendFeedbackImage(response.data.feedBackId);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            toast.warning(isEN ? "Something went wrong! Try again later." : "কিছু ভুল হয়েছে! পরে আবার চেষ্টা করুন।");
+        });
+      }
+    }else{
+      toast.warn(isEN ? "Fields contain invalid inputs!" : "ক্ষেত্রগুলি অবৈধ ইনপুট ধারণ করে!");
+    }
   }
 
   return (
@@ -189,7 +238,7 @@ function DiseasePredict() {
               type="text"
               placeholder={isEN?"Add your feedback or comment here":"এখানে আপনার মন্তব্য অথবা মন্তব্য যোগ করুন"}
               value={feedbackMessage}
-              onChange={(e)=>{setFeedbackMessage(e.target.value)}}
+              onChange={(e)=>{setFeedbackMessage(e.target.value); setShowSuccress(false);}}
               />
               <Collapse in={feedbackMessage===""}>
               <div id="example-collapse-text">
@@ -199,7 +248,8 @@ function DiseasePredict() {
               </div>
               </Collapse>
           </InputGroup>
-          
+          <div className={showSuccess?'bg-green':"no-display"}>{isEN ? "Feedback Sent Successfully!" : "মতামত সফলভাবে প্রেরিত হয়েছে!"}</div>
+
           <Button className="prediction-button" onClick={handleFeedbackClick}>{isEN?"Submit Feedback":"মন্তব্য জমা দিন"}</Button>
           </div>
         </div>

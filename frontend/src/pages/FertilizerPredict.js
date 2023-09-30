@@ -215,7 +215,7 @@ function FertilizerPredict() {
           {predictedCrop === "" ? (
               <div></div>
             ) : (
-              <FeedbackG feedbackTitle={"Recommended Fertilizer:"} predictionMessage={getFirstSentence(predictedCrop)} show={true}/>
+              <FeedbackG feedbackTitle={"Recommended Fertilizer: "} predictionMessage={getFirstSentence(predictedCrop)} show={true}/>
             )}
         </div>
 
