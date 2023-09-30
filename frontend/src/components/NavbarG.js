@@ -23,7 +23,7 @@ const NavbarG = ({currentPage}) => {
     const navigate = useNavigate();
 
     const {isEN} = useContext(LanguageContext);
-    const {token, setToken, walletBalance, setWalletBalance, uid} = useContext(LoginContext);
+    const {token, setToken, walletBalance, setWalletBalance, uid, role} = useContext(LoginContext);
 
     const [showModal, setShowModal] = useState(false);
     const [accountNo, setAccountNo] = useState("");
@@ -122,6 +122,16 @@ const NavbarG = ({currentPage}) => {
         }
     }
 
+    const handleHomeClick = () => {
+
+        if(role==="ROLE_ADMIN"){
+            navigate("/admin-home");
+            return;
+        }
+
+        navigate("/home");
+    }
+
     return (
         <div className='p-3'>
             <Navbar collapseOnSelect expand="lg" className="bg-dark navbar-dark rounded">
@@ -147,7 +157,7 @@ const NavbarG = ({currentPage}) => {
                 <Nav className="me-auto">
                 </Nav>
                 <Nav>
-                    <Nav.Link href='/home' className={currentPage === 0 ? 'bold' : ''}>
+                    <Nav.Link onClick={handleHomeClick} className={currentPage === 0 ? 'bold' : ''}>
                         {isEN?"Home":"হোম"}
                     </Nav.Link>
                     <Nav.Link onClick={handleCropPredClick} className={currentPage === 1 ? 'bold' : ''}>

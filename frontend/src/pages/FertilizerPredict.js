@@ -204,7 +204,7 @@ function FertilizerPredict() {
 
         <div className='prediction-container'>
           <div className='empty-container'></div>
-          <div className="prediction-section">
+          <div className={predictedCrop===""?"prediction-section-ini":"prediction-section"}>
             <h1 className='input-title'>{isEN?"Fertilizer Recommendation":"সার সুপারিশ"}</h1>
             {predictedCrop === "" ? (
               <h3>{isEN?"Click on the button left to get recommendation":"সুপারিশ পেতে বাম বোতামে ক্লিক করুন"}</h3>
