@@ -134,7 +134,7 @@ function DiseasePredict() {
       <NavbarG currentPage={3}/>
       <div className='duo-container'>
         <div className='image-upload'>
-          <h1 className='image-upload-title-ex'>Crop leaf Image</h1>
+          <h1 className='image-upload-title-ex'>{isEN?"Crop leaf Image(Clean Background)":"পাতার ছবি(পরিষ্কার পটভূমি)"}</h1>
           {image ? (
             <img
               src={URL.createObjectURL(image)}
@@ -143,7 +143,7 @@ function DiseasePredict() {
             />
           ) : (
             <div>
-              <div className='upload-instruct'>Upload leaf image of the crop for which you want to identify the disease.</div>
+              <div className='upload-instruct'>{isEN ? "Upload leaf image of the crop for which you want to identify the disease." : "আপনি যে ফসলের রোগ চিহ্নিত করতে চান তার পাতার ছবি আপলোড করুন।"}</div>
               <div
                 className={isDraggedOver ? 'dragged-over' : 'not-dragged-over'}
                 onDragOver={handleDragOver}
@@ -156,27 +156,27 @@ function DiseasePredict() {
                   className="mr-3"
                   src="https://cdn-icons-png.flaticon.com/512/8191/8191568.png" //In=mage Credit: FlatIcon
                 />
-                <div>Drag and drop your image here</div>Or<p> Select the image with the button below</p>
+                <div>{isEN ? "Drag and drop your image here" : "এখানে আপনার ছবি টেনে নিয়ে ফেলুন"}</div>{isEN ? "Or" : "অথবা"}<p>{isEN ? "Select the image with the button below" : "নীচের বাটনে ক্লিক করে ছবি নির্বাচন করুন"}</p>
               </div>
             </div>
           )}
           <div className="upload-btn">
             <div className="uploadimage">
-                <label className='label-c' htmlFor="imgs">Select Image</label>
+                <label className='label-c' htmlFor="imgs">{isEN ? "Select Image" : "ছবি নির্বাচন করুন"}</label>
             </div>
             <input id="imgs" type="file" accept="image/*" onChange={handleImageUpload} />
           </div>
         </div>
 
-        <div className='identify-disease'>
-          <h1 className='image-upload-title-ex'>Identified Disease</h1>
-          <div className='upload-instruct'><strong>Plant: </strong>{plant+"  "}<strong>Disease: </strong>{diseaseMessage}</div>
-          <div className='upload-instruct'> <strong>Cause of Disease</strong> <br /> {causeDisease} </div>
-          <div className='upload-instruct'> <strong>Prevention of Disease</strong> <br /> {preventionDisease} </div>
-          <Button className="prediction-button" onClick={handlePredictionClick}>Identify Disease</Button>
+        <div className={diseaseMessage===defaultDiseaseMessage?'identify-disease-nopad':"identify-disease"}>
+          <h1 className='image-upload-title-ex'>{isEN ? "Identified Disease" : "চিহ্নিত রোগ"}</h1>
+          <div className='upload-instruct'><strong>{isEN ? "Plant: " : "উদ্ভিদ: "}</strong>{isEN?plant+"  ":plantB+"  "}<strong>{isEN?"Disease: ":"রোগ: "}</strong>{isEN?diseaseMessage:diseaseMessageB}</div>
+          <div className='upload-instruct'> <strong>{isEN ? "Cause of Disease" : "রোগের কারণ"}</strong> <br /> {isEN?causeDisease:causeDiseaseB} </div>
+          <div className='upload-instruct'> <strong>{isEN ? "Prevention of Disease" : "রোগ প্রতিরোধ"}</strong> <br /> {isEN?preventionDisease:preventionDiseaseB} </div>
+          <Button className="prediction-button" onClick={handlePredictionClick}>{isEN ? "Identify Disease" : "রোগ চিহ্নিত করুন"}</Button>
 
           <div className={diseaseMessage===defaultDiseaseMessage? "no-display":"feedback-section"}>
-            <h2 className='feedback-title'>Your feedback On Identified Disease</h2>
+            <h2 className='feedback-title'>{isEN ? "Your feedback On Identified Disease" : "চিহ্নিত রোগের উপর আপনার মতামত"}</h2>
             <img
               src={image? URL.createObjectURL(image):""}
               alt="Uploaded Leaf"
@@ -184,23 +184,23 @@ function DiseasePredict() {
             />
             <div><strong>Plant: </strong>{plant+"  "}<strong>Disease: </strong>{diseaseMessage}</div>{/** Title of the feedback */}
             <InputGroup className="mb-3">
-              <InputGroup.Text  className="input-group-text-dark">Your Feedback</InputGroup.Text>
+              <InputGroup.Text  className="input-group-text-dark">{isEN?"Your Feedback":"আপনার মতামত"}</InputGroup.Text>
               <Form.Control
               type="text"
-              placeholder="Add your feedback or comment here"
+              placeholder={isEN?"Add your feedback or comment here":"এখানে আপনার মন্তব্য অথবা মন্তব্য যোগ করুন"}
               value={feedbackMessage}
               onChange={(e)=>{setFeedbackMessage(e.target.value)}}
               />
               <Collapse in={feedbackMessage===""}>
               <div id="example-collapse-text">
                   <Card body className='warn-card custom-card'>
-                    Feedback cannot be empty!
+                  {isEN?"Feedback cannot be empty!":"মন্তব্য খালি রাখা যাবে না!"}
                   </Card>
               </div>
               </Collapse>
           </InputGroup>
           
-          <Button className="prediction-button" onClick={handleFeedbackClick}>Submit Feedback</Button>
+          <Button className="prediction-button" onClick={handleFeedbackClick}>{isEN?"Submit Feedback":"মন্তব্য জমা দিন"}</Button>
           </div>
         </div>
 
