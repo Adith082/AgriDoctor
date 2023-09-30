@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import "./FeedbackA.css"
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
@@ -6,10 +6,11 @@ import { LanguageContext } from '../contexts/LanguageContext';
 import { toast } from "react-toastify";
 import { LoginContext } from '../contexts/LoginContext';
 
-const FeedbackA = ({image, title, feedback, date, id, getAllFeedbacks}) => {
+const FeedbackA = ({imageName, title, feedback, date, id, getAllFeedbacks}) => {
 
   const {isEN} = useContext(LanguageContext);
   const {token} = useContext(LoginContext);
+  const [imgSrc, setImgSrc] = useState(null);
 
   const handleDelete = () =>{
     const headers = {
@@ -33,10 +34,36 @@ const FeedbackA = ({image, title, feedback, date, id, getAllFeedbacks}) => {
     });
   }
 
+  useEffect(() => {
+    const getImage = () => {
+    
+      const headers = {
+        Authorization: "Bearer " + token,
+        'Content-Type': 'multipart/form-data',
+      }
+  
+      axios.get("https://agridoctorbackend-production.up.railway.app/api/feedback/image/"+imageName, { headers:headers, 
+      responseType: 'arraybuffer' })
+      .then(response => {
+        console.log(response);
+        setImgSrc(URL.createObjectURL(new Blob([response.data])))
+        return;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        setImgSrc(null);
+      });
+  
+      setImgSrc(null);
+  
+    }
+    getImage();
+  }, [imageName, token]);
+
   return (
     <div className='admin-feedback-container'>
-      <img className={image?"":"no-display"}
-          src={image? image:""}
+      <img className={imgSrc?"":""}
+          src={imgSrc?imgSrc:null}
           alt="Uploaded Leaf"
           style={{ maxWidth: '10vw', maxHeight: '10vh', border: "2px solid white" , marginTop:"0.5rem", marginBottom:"0.5rem"}}
       />

@@ -12,6 +12,8 @@ import { LanguageContext } from '../contexts/LanguageContext.js';
 import axios from 'axios';
 import { LoginContext } from '../contexts/LoginContext.js';
 import { useNavigate } from 'react-router-dom';
+import Modal from 'react-bootstrap/Modal';
+import Image from 'react-bootstrap/Image';
 
 function LoginRegister() {
 
@@ -43,7 +45,11 @@ function LoginRegister() {
   const [rePassWarnMessage, setRePassWarnMessage] = useState("")
 
   const [showSignup, setShowSignup] = useState(false)
-  const [adminShow, setAdminShow] = useState(false)
+  const [adminShow, setAdminShow] = useState(false);
+
+  const [showModal, setShowModal] = useState(false);
+  const [code, setCode] = useState("");
+  const [enterdCode, setEnteredCode] = useState("");
 
   const handleFirstNameChange = (e) => {
     const value = e.target.value;
@@ -56,7 +62,7 @@ function LoginRegister() {
       setNameWarnMessage(isEN?"First Name must be at least 3 characters long.":"নামের প্রথম অংশ অন্তত ৩ টি অক্ষর হতে হবে।");
     } else {
       setFirstNameOpen(false);
-      setLastNameValid(true);
+      setFirstNameValid(true);
       setNameWarnMessage("");
     }
   }
@@ -115,6 +121,9 @@ function LoginRegister() {
       setPassOpen(false);
       setPasswordValid(true)
       setPassWarnMessage("");
+      setRePassOpen(false);
+      setRePasswordValid(true);
+      setRePassWarnMessage("");
     }
   }
 
@@ -125,20 +134,59 @@ function LoginRegister() {
     // Perform retype password validation here
     if (value !== password) {
       setRePassOpen(true);
-      setRePasswordValid(true);
+      setRePasswordValid(false);
       setRePassWarnMessage(isEN?"Password and retyped passwords do not match.":"পাসওয়ার্ড এবং পুনরায় লিখিত পাসওয়ার্ড মিলে না।");
     } else {
       setRePassOpen(false);
-      setRePasswordValid(false);
+      setRePasswordValid(true);
       setRePassWarnMessage("");
+      setPassOpen(false);
+      setPasswordValid(true)
+      setPassWarnMessage("");
     }
   }
 
   const handleRegistrationClick = () => {
+
     if(firstNameValid && lastNameValid && emailValid && passwordValid && rePasswordValid){
-      toast.success(isEN?"Registration Success!":"নিবন্ধন সফল!");
+      const headers = {};
+
+      axios.post("https://agridoctorbackend-production.up.railway.app/api/verifyemail", {email:email}, { headers })
+      .then(response => {
+        setCode(response.data.verificationCode);
+        setShowModal(true);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        toast.warning(isEN ? "Something went wrong! Try again later." : "কিছু ভুল হয়েছে! পরে আবার চেষ্টা করুন।");
+      });
     }else{
       toast.warn(isEN?"Some of the iputs are invalid!":"কিছু ইনপুট অবৈধ!");
+    }
+  }
+
+  const performRegistration = () => {
+    if(enterdCode===code){
+      // const headers = {};
+
+      const username = firstName+" "+lastName;
+
+      axios.post("https://agridoctorbackend-production.up.railway.app/api/auth/register", {
+        "name": username,
+        "email": email,
+        "password": password
+      })
+      .then(response => {
+        setShowModal(false);
+        toast.success(isEN?"Registration Success!":"নিবন্ধন সফল!");
+        navigate("/");
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        toast.warning(isEN ? "Wrong e-mail or password" : "ভুল ইমেইল অথবা পাসওয়ার্ড")
+      });
+    }else{
+      toast.warn(isEN?"Entered wrong code!":"আপনি ভুল কোড দিয়েছেন!");
     }
   }
 
@@ -382,6 +430,38 @@ function LoginRegister() {
         <Button className="custom-button" onClick={handleAdminLoginClick}>Login</Button>
         <span className="login-text">{isEN ? "Cannot access even after being Admin? " : "অ্যাডমিন হলেও অ্যাক্সেস করতে পারছেননি? "}<span className="highlighted-link" onClick={() => {}}>{isEN ? "Contact the System Admins!" : "সিস্টেম অ্যাডমিনদের সাথে যোগাযোগ করুন!"}</span></span>
       </div>
+
+      
+      <Modal show={showModal} onHide={(e)=>{setShowModal(false)}} centered>
+        <Modal.Header closeButton>
+            <Image
+                width={64}
+                height={64}
+                className="mr-3"
+                src="https://cdn-icons-png.flaticon.com/512/5679/5679639.png" //Image Credit: FlatIcon
+            />
+            <Modal.Title>&nbsp;&nbsp;{isEN?"Enter the verification code sent to    your e-mail below":"নীচে আপনার ই-মেইলে পাঠানো    যাচাইকরণ কোডটি লিখুন"}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            <InputGroup className="mb-3">
+                <InputGroup.Text  className="input-group-text-dark">{isEN?"Verification Code":"যাচাইকরণ কোড"}</InputGroup.Text>
+                <Form.Control
+                type="text"
+                placeholder={isEN?"E-mail Verification Code":"ই-মেইল যাচাইকরণ কোড"}
+                value={enterdCode}
+                onChange={(e)=>{setEnteredCode(e.target.value)}}
+                />
+            </InputGroup>
+        </Modal.Body>
+        <Modal.Footer>
+            <Button variant="outline-success" onClick={performRegistration}>
+                {isEN?"Verify E-mail":"ইমেল যাচাই করুন"}
+            </Button>
+        </Modal.Footer>
+    </Modal>
+
+
+
     </div>
   )
 }
