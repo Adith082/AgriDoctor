@@ -16,6 +16,7 @@ import { LanguageContext } from '../contexts/LanguageContext';
 import { LoginContext } from '../contexts/LoginContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Spinner from 'react-bootstrap/Spinner';
 
 function NewlineText({ text }) {
   const newText = text.split('\n').map((str, index) => (
@@ -31,6 +32,8 @@ function FertilizerPredict() {
 
   const {isEN} = useContext(LanguageContext);
   const {token, uid, setWalletBalance} = useContext(LoginContext);
+
+  const [showSpinner, setShowSpinner] = useState(false);
 
   const navigate = useNavigate();
 
@@ -75,6 +78,7 @@ function FertilizerPredict() {
     else setCropValid(true);
 
     if(nitrogenValid && phosphorusValid && potassiumValid &&cropValid){
+      setShowSpinner(true);
       if(token){
         const headers = {
             Authorization: "Bearer "+token
@@ -89,6 +93,7 @@ function FertilizerPredict() {
         .then(response => {
             if(response.data.message==="No currency left. Cannot Provide Service."){
               toast.warn(isEN ? "Not enough balance. Please recharge your wallet balance!" : "যালেন্স পর্যাপ্ত নয়। দয়া করে আপনার ওয়ালেট ব্যালেন্স চার্জ করুন!");
+              setShowSpinner(false);
               return;
             }
             console.log(response.data);
@@ -96,14 +101,17 @@ function FertilizerPredict() {
             setPredictedCrop(response.data.recommendationEnglish);
             setPredictedCropB(response.data.recommendationBengali);
             toast.success(isEN ? "Successful!" : "সফল!");
+            setShowSpinner(false);
         })
         .catch(error => {
             console.error('Error:', error);
             toast.warning(isEN ? "Something went wrong! Try again later." : "কিছু ভুল হয়েছে! পরে আবার চেষ্টা করুন।");
+            setShowSpinner(false)
         });
       }
     }else{
       toast.warn(isEN ? "Fields contain invalid inputs!" : "ক্ষেত্রগুলি অবৈধ ইনপুট ধারণ করে!");
+      setShowSpinner(false)
     }
   }
 
@@ -197,14 +205,14 @@ function FertilizerPredict() {
               </div>
               </Collapse>
             </InputGroup>
-            <Button className="prediction-button" onClick={handleCropPredClick}>Get Fertilizer Recommendation</Button>
+            <Button className="prediction-button" onClick={handleCropPredClick}><Spinner className={showSpinner?"":"no-display"} animation="border" variant="light" role='status' size="sm"/>{isEN?" Get Fertilizer Recommendation":" সার সুপারিশ পান"}</Button>
 
           </div>
         </div>
 
-        <div className='prediction-container'>
+        <div className='prediction-container-fr'>
           <div className='empty-container'></div>
-          <div className={predictedCrop===""?"prediction-section-ini":"prediction-section"}>
+          <div className={predictedCrop===""?"prediction-section-ini":"prediction-section-fr"}>
             <h1 className='input-title'>{isEN?"Fertilizer Recommendation":"সার সুপারিশ"}</h1>
             {predictedCrop === "" ? (
               <h3>{isEN?"Click on the button left to get recommendation":"সুপারিশ পেতে বাম বোতামে ক্লিক করুন"}</h3>

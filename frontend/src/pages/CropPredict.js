@@ -14,6 +14,7 @@ import { LoginContext } from '../contexts/LoginContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { SupportedCrops, SupportedCropsBengali } from '../components/SupportedCrops';
+import Spinner from 'react-bootstrap/Spinner';
 
 function CropPredict() {
 
@@ -38,6 +39,9 @@ function CropPredict() {
 
   const [predictedCrop, setPredictedCrop] = useState("")
 
+  
+  const [showSpinner, setShowSpinner] = useState(false);
+
   useEffect(() => {
     //checking the existence of token
     const checkToken = () => {
@@ -60,6 +64,7 @@ function CropPredict() {
 
     if(nitrogenValid && phosphorusValid && potassiumValid && pHValid && cityNameValid && rainfallValid){
       if(token){
+        setShowSpinner(true);
         const headers = {
             Authorization: "Bearer "+token
         }
@@ -75,20 +80,24 @@ function CropPredict() {
         .then(response => {
             if(response.data.message==="No currency left. Cannot Provide Service."){
               toast.warn(isEN ? "Not enough balance. Please recharge your wallet balance!" : "যালেন্স পর্যাপ্ত নয়। দয়া করে আপনার ওয়ালেট ব্যালেন্স চার্জ করুন!");
+              setShowSpinner(false);
               return;
             }
             console.log(response.data);
             setWalletBalance(response.data.wallet);
             setPredictedCrop(response.data.recommendation);
             toast.success(isEN ? "Successful!" : "সফল!");
+            setShowSpinner(false);
         })
         .catch(error => {
             console.error('Error:', error);
             toast.warning(isEN ? "Something went wrong! Try again later." : "কিছু ভুল হয়েছে! পরে আবার চেষ্টা করুন।");
+            setShowSpinner(false);
         });
       }
     }else{
       toast.warn(isEN ? "Fields contain invalid inputs!" : "ক্ষেত্রগুলি অবৈধ ইনপুট ধারণ করে!");
+      setShowSpinner(false);
     }
   }
 
@@ -197,7 +206,7 @@ function CropPredict() {
               </div>
               </Collapse>
             </InputGroup>
-            <Button className="prediction-button" onClick={handleCropPredClick}>{isEN ? "Get Crop Recommendation" : "ফসলের সুপারিশ পান"}</Button>
+            <Button className="prediction-button" onClick={handleCropPredClick}><Spinner className={showSpinner?"":"no-display"} animation="border" variant="light" role='status' size="sm"/>{isEN ? " Get Crop Recommendation" : " ফসলের সুপারিশ পান"}</Button>
 
           </div>
         </div>

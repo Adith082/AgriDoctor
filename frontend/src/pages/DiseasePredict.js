@@ -13,10 +13,25 @@ import { LanguageContext } from '../contexts/LanguageContext';
 import { LoginContext } from '../contexts/LoginContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Spinner from 'react-bootstrap/Spinner';
+
+function removeBR(string){
+  const stringWithLineBreaks = string.replace(/<br\/>/g, '\n');
+
+  // Render in JSX
+  return (
+    <div>
+      {stringWithLineBreaks.split('\n').map((line, index) => (
+        <div key={index}>{line}</div>
+      ))}
+    </div>
+  );
+}
 
 function DiseasePredict() {
 
-  const defaultDiseaseMessage = "Disease not yet identiied. Click the button below to get started."
+  const defaultDiseaseMessage = "Disease not yet identiied. Click the button below to get started.";
+  const defaultDiseaseMessageB = "রোগ এখনও সনাক্ত করা যায়নি। শুরু করতে নীচের বোতামে ক্লিক করুন।";
 
   const {isEN} = useContext(LanguageContext);
   const {token, uid, setWalletBalance} = useContext(LoginContext);
@@ -32,12 +47,13 @@ function DiseasePredict() {
   const [preventionDisease, setPreventionDisease] = useState("")
   const [plant, setPlant] = useState("")
 
-  const [diseaseMessageB, setDiseaseMessageB] = useState(defaultDiseaseMessage);
+  const [diseaseMessageB, setDiseaseMessageB] = useState(defaultDiseaseMessageB);
   const [causeDiseaseB, setCauseDiseaseB] = useState("")
   const [preventionDiseaseB, setPreventionDiseaseB] = useState("")
   const [plantB, setPlantB] = useState("")
 
   const [showSuccess, setShowSuccress] = useState(false);
+  const [showSpinner, setShowSpinner] = useState(false);
 
   useEffect(() => {
     //checking the existence of token
@@ -51,8 +67,17 @@ function DiseasePredict() {
     checkToken();
   }, [token, isEN, navigate]);
 
-  const handleImageUpload = (e) => {
+  const setAllDefault = () => {
     setDiseaseMessage(defaultDiseaseMessage);
+    setCauseDiseaseB(defaultDiseaseMessageB);
+    setCauseDisease("");
+    setCauseDiseaseB("");
+    setPreventionDisease("");
+    setPreventionDiseaseB("");
+  }
+
+  const handleImageUpload = (e) => {
+    setAllDefault();
     setImage(e.target.files[0]);
   }
 
@@ -76,7 +101,7 @@ function DiseasePredict() {
 
     const droppedFile = e.dataTransfer.files[0];
     if (droppedFile && droppedFile.type.startsWith('image/')) {
-      setDiseaseMessage(defaultDiseaseMessage);
+      setAllDefault();
       setImage(droppedFile);
     } else {
       toast.warn("Dropped file was invalid image file!");
@@ -85,6 +110,7 @@ function DiseasePredict() {
 
   const handlePredictionClick = async (e) => {
     if(image){
+      setShowSpinner(true);
       if(token){
         const headers = {
             Authorization: "Bearer "+token,
@@ -99,6 +125,7 @@ function DiseasePredict() {
         .then(response => {
             if(response.data.message==="No currency left. Cannot Provide Service."){
               toast.warn(isEN ? "Not enough balance. Please recharge your wallet balance!" : "যালেন্স পর্যাপ্ত নয়। দয়া করে আপনার ওয়ালেট ব্যালেন্স চার্জ করুন!");
+              setShowSpinner(false)
               return;
             }
             console.log(response.data);
@@ -115,15 +142,18 @@ function DiseasePredict() {
             setPreventionDiseaseB(response.data.preventionOrCureBn);
 
             toast.success(isEN ? "Successful!" : "সফল!");
+            setShowSpinner(false);
         })
         .catch(error => {
             console.error('Error:', error);
             toast.warning(isEN ? "Something went wrong! Try again later." : "কিছু ভুল হয়েছে! পরে আবার চেষ্টা করুন।");
+            setShowSpinner(false)
         });
 
       }
     }else{
       toast.warn(isEN ? "Fields contain invalid inputs!" : "ক্ষেত্রগুলি অবৈধ ইনপুট ধারণ করে!");
+      setShowSpinner(false);
     }
   }
 
@@ -135,6 +165,8 @@ function DiseasePredict() {
           'Content-Type': 'multipart/form-data'
       }
 
+      setShowSpinner(true);
+
       const data = new FormData();
       data.append("image",image);
 
@@ -143,20 +175,24 @@ function DiseasePredict() {
             console.log(response.data);
             setShowSuccress(true);
             toast.success(isEN ? "Successful!" : "সফল!");
+            setShowSpinner(false)
         })
         .catch(error => {
             console.error('Error:', error);
             toast.warning(isEN ? "Something went wrong! Try again later." : "কিছু ভুল হয়েছে! পরে আবার চেষ্টা করুন।");
+            setShowSpinner(false);
         });
       }
     }else{
       toast.warn(isEN ? "Fields contain invalid inputs!" : "ক্ষেত্রগুলি অবৈধ ইনপুট ধারণ করে!");
+      setShowSpinner(false);
     }
   }
 
   const handleFeedbackClick = (e) => {
     if(feedbackMessage!==""){
       if(token){
+        setShowSpinner(true);
         const headers = {
             Authorization: "Bearer "+token
         }
@@ -171,10 +207,12 @@ function DiseasePredict() {
         .catch(error => {
             console.error('Error:', error);
             toast.warning(isEN ? "Something went wrong! Try again later." : "কিছু ভুল হয়েছে! পরে আবার চেষ্টা করুন।");
+            setShowSpinner(false);
         });
       }
     }else{
       toast.warn(isEN ? "Fields contain invalid inputs!" : "ক্ষেত্রগুলি অবৈধ ইনপুট ধারণ করে!");
+      setShowSpinner(false);
     }
   }
 
@@ -220,9 +258,12 @@ function DiseasePredict() {
         <div className={diseaseMessage===defaultDiseaseMessage?'identify-disease-nopad':"identify-disease"}>
           <h1 className='image-upload-title-ex'>{isEN ? "Identified Disease" : "চিহ্নিত রোগ"}</h1>
           <div className='upload-instruct'><strong>{isEN ? "Plant: " : "উদ্ভিদ: "}</strong>{isEN?plant+"  ":plantB+"  "}<strong>{isEN?"Disease: ":"রোগ: "}</strong>{isEN?diseaseMessage:diseaseMessageB}</div>
-          <div className='upload-instruct'> <strong>{isEN ? "Cause of Disease" : "রোগের কারণ"}</strong> <br /> {isEN?causeDisease:causeDiseaseB} </div>
-          <div className='upload-instruct'> <strong>{isEN ? "Prevention of Disease" : "রোগ প্রতিরোধ"}</strong> <br /> {isEN?preventionDisease:preventionDiseaseB} </div>
-          <Button className="prediction-button" onClick={handlePredictionClick}>{isEN ? "Identify Disease" : "রোগ চিহ্নিত করুন"}</Button>
+          <div className='upload-instruct'> <strong>{isEN ? "Cause of Disease" : "রোগের কারণ"}</strong> <br /> {isEN?removeBR(causeDisease):removeBR(causeDiseaseB)} </div>
+          <div className='upload-instruct'> <strong>{isEN ? "Prevention of Disease" : "রোগ প্রতিরোধ"}</strong> <br /> {isEN?removeBR(preventionDisease):removeBR(preventionDiseaseB)} </div>
+          <Button className="prediction-button" onClick={handlePredictionClick}>
+            <Spinner className={showSpinner?"":"no-display"} animation="border" variant="light" role='status' aria-hidden='true' size="sm"/>
+            {isEN ? " Identify Disease" : " রোগ চিহ্নিত করুন"}
+          </Button>
 
           <div className={diseaseMessage===defaultDiseaseMessage? "no-display":"feedback-section"}>
             <h2 className='feedback-title'>{isEN ? "Your feedback On Identified Disease" : "চিহ্নিত রোগের উপর আপনার মতামত"}</h2>
@@ -249,8 +290,7 @@ function DiseasePredict() {
               </Collapse>
           </InputGroup>
           <div className={showSuccess?'bg-green':"no-display"}>{isEN ? "Feedback Sent Successfully!" : "মতামত সফলভাবে প্রেরিত হয়েছে!"}</div>
-
-          <Button className="prediction-button" onClick={handleFeedbackClick}>{isEN?"Submit Feedback":"মন্তব্য জমা দিন"}</Button>
+            <Button className="prediction-button" onClick={handleFeedbackClick}><Spinner className={showSpinner?"":"no-display"} animation="border" variant="light" role='status' size="sm"/>{isEN?" Submit Feedback":" মন্তব্য জমা দিন"}</Button>
           </div>
         </div>
 
