@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { LanguageContext } from '../contexts/LanguageContext';
 import LanguageSelector from './LanguageSelector';
+import Image from 'react-bootstrap/Image';
 
 const NavbarLR =  ({setShowSignup, setAdminShow}) => {
 
@@ -37,14 +38,34 @@ const NavbarLR =  ({setShowSignup, setAdminShow}) => {
             </Nav>
             <Nav>
               <Nav.Link onClick={(e)=> {setAdminShow(true);setShowSignup(false);}}>
-                {isEN?"Admin Login":"অ্যাডমিন লগ-ইন"}
+                <Image
+                  width={25}
+                  height={25}
+                  className="mr-3"
+                  src="https://cdn-icons-png.flaticon.com/512/5516/5516903.png " //Image Credit: FlatIcon
+                />  
+                {isEN?" Admin Login":" অ্যাডমিন লগ-ইন"}
               </Nav.Link>
             </Nav>
             "  "
             <Nav>
-              <Button variant="outline-success" onClick={(e)=>{setShowSignup(false); setAdminShow(false);}}>{isEN?"Login":"লগ-ইন"}</Button>
+              <Button variant="outline-success" onClick={(e)=>{setShowSignup(false); setAdminShow(false);}}>
+                <Image
+                width={25}
+                height={25}
+                className="mr-3"
+                src="https://cdn-icons-png.flaticon.com/512/5582/5582872.png" //Image Credit: FlatIcon
+                />
+              {isEN?"Login":"লগ-ইন"}</Button>
               "  "
-              <Button variant="outline-success" onClick={(e)=>{setShowSignup(true); setAdminShow(false);}}>{isEN?"Sign up":"সাইন আপ"}</Button>
+              <Button variant="outline-success" onClick={(e)=>{setShowSignup(true); setAdminShow(false);}}>
+              <Image
+                width={25}
+                height={25}
+                className="mr-3"
+                src="https://cdn-icons-png.flaticon.com/128/10969/10969109.png" //Image Credit: FlatIcon
+              />  
+              {isEN?" Sign up":" সাইন আপ"}</Button>
             </Nav>
             "  "
             <Nav>

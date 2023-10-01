@@ -67,7 +67,9 @@ function Home() {
                 <Card className="h-100 shadow">
                     <Card.Img variant="top" className='card-image' src={require('../images/granulated-fertilize.jpg')}/> {/*Image Credit: Image by Zbynek Pospisil*/}
                     <Card.Body>
-                    <Card.Title>{isEN ? "Fertilizer Recommendation" : "উর্বরক পরামর্শ"}</Card.Title>
+                    <Card.Title>
+                      {isEN ? "Fertilizer Recommendation" : "উর্বরক পরামর্শ"}
+                    </Card.Title>
                     <Card.Text>
                     {isEN
                       ? "Based on the provided soil nutrient levels and the type of plant you are growing, you can receive recommendations for adjusting the soil nutrient levels and using specific fertilizers to achieve optimal crop growth."

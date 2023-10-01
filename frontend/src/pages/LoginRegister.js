@@ -275,7 +275,14 @@ function LoginRegister() {
     <div className='main-container'>
       <NavbarLR setShowSignup={setShowSignup} resetForm={resetForm} setAdminShow={setAdminShow}/>
       <div className={`signup-section ${showSignup ? '' : 'hidden'}`}>
-        <h2 className="text-center mb-4 heading">{isEN?"Sign up":"সাইন আপ"}</h2>
+        <h2 className="text-center mb-4 heading">
+        <Image
+          width={50}
+          height={50}
+          className="mr-3"
+          src="https://cdn-icons-png.flaticon.com/128/10969/10969109.png" //Image Credit: FlatIcon
+        />  
+        {isEN?"Sign up":"সাইন আপ"}</h2>
         <InputGroup className="mb-3">
           <InputGroup.Text className="input-group-text-dark">{isEN?"Name":"নাম"}</InputGroup.Text>
           <Form.Control
@@ -352,7 +359,14 @@ function LoginRegister() {
         </span></span>
       </div>
       <div className={`login-section ${showSignup || (adminShow) ? 'hidden' : ''}`}>
-        <h2 className="text-center mb-4 heading">{isEN ? "Login" : "লগ-ইন"}</h2>
+        <h2 className="text-center mb-4 heading">
+        <Image
+          width={50}
+          height={50}
+          className="mr-3"
+          src="https://cdn-icons-png.flaticon.com/512/5582/5582872.png" //Image Credit: FlatIcon
+        />
+        {isEN ? "Login" : "লগ-ইন"}</h2>
         <InputGroup className="mb-3">
           <InputGroup.Text  className="input-group-text-dark">{isEN ? "E-mail" : "ই-মেইল"}</InputGroup.Text>
           <Form.Control

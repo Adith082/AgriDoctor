@@ -36,6 +36,11 @@ const FeedbackA = ({imageName, title, feedback, date, id, getAllFeedbacks}) => {
 
   useEffect(() => {
     const getImage = () => {
+
+      if(imageName==="default.png"){
+        setImgSrc(null);
+        return;
+      }
     
       const headers = {
         Authorization: "Bearer " + token,
@@ -62,7 +67,7 @@ const FeedbackA = ({imageName, title, feedback, date, id, getAllFeedbacks}) => {
 
   return (
     <div className='admin-feedback-container'>
-      <img className={imgSrc?"":""}
+      <img className={imgSrc?"":"no-display"}
           src={imgSrc?imgSrc:null}
           alt="Uploaded Leaf"
           style={{ maxWidth: '10vw', maxHeight: '10vh', border: "2px solid white" , marginTop:"0.5rem", marginBottom:"0.5rem"}}

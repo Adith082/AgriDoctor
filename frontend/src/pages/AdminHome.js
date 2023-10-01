@@ -11,10 +11,16 @@ import axios from 'axios';
 
 function AdminHome() {
 
+  const itemsPerPage = 4; // Display 4 items per page
+
   const {isEN} = useContext(LanguageContext);
   const {token, role} = useContext(LoginContext);
 
   const [allFeedbacks, setAllFeedbacks] = useState(null);
+
+  const [startIndex, setStartIndex] = useState(0);
+  const [endIndex, setEndIndex] = useState(4);
+  const [pageNumber, setPageNumber] = useState(1);
 
   const navigate = useNavigate();
 
@@ -86,6 +92,39 @@ function AdminHome() {
       });
     }
   }
+  
+  function returnEnd(end){
+    if(end<=allFeedbacks.length) return end;
+    return allFeedbacks.length;
+  }
+
+  function setStartEnd(pn){
+    const st = (pn - 1) * itemsPerPage;
+    setStartIndex(st);
+    setEndIndex(returnEnd(st+itemsPerPage));
+  }
+
+  const handlePreviousClick = (e) => {
+    if(pageNumber<=1){
+      setPageNumber(1);
+      setStartEnd(1);
+    }else{
+      const newPageNumber = pageNumber-1;
+      setPageNumber(newPageNumber);
+      setStartEnd(newPageNumber);
+    }
+  }
+
+  const handleNextClick = (e) => {
+    if(pageNumber>=Math.ceil(allFeedbacks.length/itemsPerPage)){
+      setPageNumber(Math.ceil(allFeedbacks.length/itemsPerPage));
+      setStartEnd(Math.ceil(allFeedbacks.length/itemsPerPage));
+    }else{
+      const newPageNumber = pageNumber+1;
+      setPageNumber(newPageNumber);
+      setStartEnd(newPageNumber);
+    }
+  }
 
   return (
     <div className='admin-home-container'>
@@ -94,16 +133,17 @@ function AdminHome() {
         <div className='list-container'>
           <h1 className='image-upload-title-ex'>User Feedbacks</h1>
 
-          {allFeedbacks.map((feedback, index)=> (
+          {allFeedbacks.slice(startIndex, endIndex).map((feedback, index)=> (
           <FeedbackA key={index} imageName={feedback.imageName} title={feedback.feedBackTitle} feedback={feedback.content} date={feedback.addedDate} id={feedback.feedBackId} getAllFeedbacks={getAllFeedbacks}/>
           ))}
 
           <div className='row-flex'>
-            <div className='page-font'><strong>4</strong>/23</div>
-            <Button variant="outline-light">Next</Button>
+            <Button variant="outline-light" onClick={handlePreviousClick}>Previous</Button>
+            <div className='page-font'><strong>{pageNumber}</strong>/{Math.ceil(allFeedbacks.length/itemsPerPage)}</div>
+            <Button variant="outline-light" onClick={handleNextClick}>Next</Button>
           </div>
 
-        </div>:<h1 className='image-upload-title-ex'>All User Feedbacks Handled!</h1>}
+        </div>:<h1 className='image-upload-title-ex'>{'   '}All User Feedbacks Handled!</h1>}
     </div>
   )
 }
