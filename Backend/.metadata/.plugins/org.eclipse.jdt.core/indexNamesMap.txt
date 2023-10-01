@@ -1,3 +1,0 @@
-INDEX VERSION 1.132
-file:/C:/Users/HP/Desktop/javafest_deployment_backup/THERAP_JAVAFEST_2K23/AgriDoctor/Backend/.metadata/.plugins/org.eclipse.jdt.core/1865797976.index
-meta_index

@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<typeInfoHistroy>
-    <typeInfo handle="=agridoctor-app-apis/C:\/Users\/HP\/.m2\/repository\/org\/hibernate\/orm\/hibernate-core\/6.2.7.Final\/hibernate-core-6.2.7.Final.jar=/maven.pomderived=/true=/=/maven.groupId=/org.hibernate.orm=/=/maven.artifactId=/hibernate-core=/=/maven.version=/6.2.7.Final=/=/maven.scope=/compile=/=/maven.pomderived=/true=/&lt;org.hibernate.dialect(MySQL8Dialect.class[MySQL8Dialect" modifiers="1048609" timestamp="1694431737404"/>
-    <typeInfo handle="=agridoctor-app-apis/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.visionaryproviders.agridoctor.services{UserServices.java[UserServices" modifiers="513" timestamp="1695902201454"/>
-    <typeInfo handle="=agridoctor-app-apis/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.visionaryproviders.agridoctor.services{FeedBackServices.java[FeedBackServices" modifiers="513" timestamp="1695391113719"/>
-    <typeInfo handle="=agridoctor-app-apis/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.visionaryproviders.agridoctor.services{FileServices.java[FileServices" modifiers="513" timestamp="1695391114001"/>
-</typeInfoHistroy>
