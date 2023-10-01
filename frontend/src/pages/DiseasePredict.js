@@ -221,7 +221,13 @@ function DiseasePredict() {
       <NavbarG currentPage={3}/>
       <div className='duo-container'>
         <div className='image-upload'>
-          <h1 className='image-upload-title-ex'>{isEN?"Crop leaf Image(Clean Background)":"পাতার ছবি(পরিষ্কার পটভূমি)"}</h1>
+          <h1 className='image-upload-title-ex'>
+              <Image
+                width={50}
+                height={50}
+                className="mr-3"
+                src="https://cdn-icons-png.flaticon.com/512/3342/3342119.png" //Image Credit: FlatIcon
+              />{'  '}{isEN?"Crop leaf Image(Clean Background)":"পাতার ছবি(পরিষ্কার পটভূমি)"}</h1>
           {image ? (
             <img
               src={URL.createObjectURL(image)}
@@ -256,7 +262,13 @@ function DiseasePredict() {
         </div>
 
         <div className={diseaseMessage===defaultDiseaseMessage?'identify-disease-nopad':"identify-disease"}>
-          <h1 className='image-upload-title-ex'>{isEN ? "Identified Disease" : "চিহ্নিত রোগ"}</h1>
+          <h1 className='image-upload-title-ex'>
+              <Image
+                width={50}
+                height={50}
+                className="mr-3"
+                src="https://cdn-icons-png.flaticon.com/512/3587/3587375.png" //Image Credit: FlatIcon
+              />{isEN ? "Identified Disease" : "চিহ্নিত রোগ"}</h1>
           <div className='upload-instruct'><strong>{isEN ? "Plant: " : "উদ্ভিদ: "}</strong>{isEN?plant+"  ":plantB+"  "}<strong>{isEN?"Disease: ":"রোগ: "}</strong>{isEN?diseaseMessage:diseaseMessageB}</div>
           <div className='upload-instruct'> <strong>{isEN ? "Cause of Disease" : "রোগের কারণ"}</strong> <br /> {isEN?removeBR(causeDisease):removeBR(causeDiseaseB)} </div>
           <div className='upload-instruct'> <strong>{isEN ? "Prevention of Disease" : "রোগ প্রতিরোধ"}</strong> <br /> {isEN?removeBR(preventionDisease):removeBR(preventionDiseaseB)} </div>

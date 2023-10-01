@@ -98,9 +98,9 @@ const NavbarG = ({currentPage}) => {
         if (amount === "") {
             setAmountValid(false);
             setAmountWarn("Field cannot be empty!");
-        }else setAmount(true);
+        }else setAmountValid(true);
 
-        if(accountNoValid&&cvcValid&&dateValid&&amountValid&&(parseFloat(amount.toString())>=0)){
+        if(accountNoValid&&cvcValid&&dateValid&&amountValid&&(parseFloat(amount.toString())>=0&& accountNo!=="" && cvc !== "" && dateValid!=="" && amountValid!=="")){
             if(token){
 
                 const headers = {

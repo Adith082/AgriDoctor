@@ -17,6 +17,7 @@ import { LoginContext } from '../contexts/LoginContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Spinner from 'react-bootstrap/Spinner';
+import Image from 'react-bootstrap/Image';
 
 function NewlineText({ text }) {
   const newText = text.split('\n').map((str, index) => (
@@ -123,7 +124,13 @@ function FertilizerPredict() {
         <div className='input-container'>
           <div className="input-section">
 
-            <h1 className='input-title'>{isEN? "Soil Data": "মাটি তথ্য"}</h1>
+            <h1 className='input-title'>
+              <Image
+                width={50}
+                height={50}
+                className="mr-3"
+                src="https://cdn-icons-png.flaticon.com/512/12309/12309460.png" //Image Credit: FlatIcon
+              />{'  '}{isEN? "Soil Data": "মাটি তথ্য"}</h1>
             <InputGroup className="mb-3">
               <InputGroup.Text  className="input-group-text-dark">{isEN ? "Nitrogen (ppm)" : "নাইট্রোজেন (ppm)"}&nbsp;&nbsp;&nbsp;&nbsp;</InputGroup.Text>
               <Form.Control
@@ -213,7 +220,13 @@ function FertilizerPredict() {
         <div className='prediction-container-fr'>
           <div className='empty-container'></div>
           <div className={predictedCrop===""?"prediction-section-ini":"prediction-section-fr"}>
-            <h1 className='input-title'>{isEN?"Fertilizer Recommendation":"সার সুপারিশ"}</h1>
+            <h1 className='input-title'>
+              <Image
+                width={50}
+                height={50}
+                className="mr-3"
+                src="https://cdn-icons-png.flaticon.com/512/6049/6049858.png" //Image Credit: FlatIcon
+              />{isEN?"Fertilizer Recommendation":"সার সুপারিশ"}</h1>
             {predictedCrop === "" ? (
               <h3>{isEN?"Click on the button left to get recommendation":"সুপারিশ পেতে বাম বোতামে ক্লিক করুন"}</h3>
             ) : (

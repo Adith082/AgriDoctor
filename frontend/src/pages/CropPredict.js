@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { SupportedCrops, SupportedCropsBengali } from '../components/SupportedCrops';
 import Spinner from 'react-bootstrap/Spinner';
+import Image from 'react-bootstrap/Image';
 
 function CropPredict() {
 
@@ -109,7 +110,14 @@ function CropPredict() {
         <div className='input-container'>
           <div className="input-section">
 
-            <h1 className='input-title'>{isEN? "Soil Data": "মাটি তথ্য"}</h1>
+            <h1 className='input-title'>
+              <Image
+                width={50}
+                height={50}
+                className="mr-3"
+                src="https://cdn-icons-png.flaticon.com/512/12309/12309460.png" //Image Credit: FlatIcon
+              />{'  '}{isEN? "Soil Data": "মাটি তথ্য"}
+            </h1>
             <InputGroup className="mb-3">
               <InputGroup.Text  className="input-group-text-dark">{isEN ? "Nitrogen (ppm)" : "নাইট্রোজেন (ppm)"}&nbsp;&nbsp;&nbsp;&nbsp;</InputGroup.Text>
               <Form.Control
@@ -213,7 +221,14 @@ function CropPredict() {
 
         <div className='prediction-container'>
           <div className="prediction-section">
-            <h1 className='input-title'>{isEN ? "Crop Recommendation" : "ফসলের সুপারিশ"}</h1>
+            <h1 className='input-title'>
+              <Image
+                width={50}
+                height={50}
+                className="mr-3"
+                src="	https://cdn-icons-png.flaticon.com/512/8615/8615981.png" //Image Credit: FlatIcon
+              />{'  '}
+              {isEN ? "Crop Recommendation" : "ফসলের সুপারিশ"}</h1>
             {predictedCrop === "" ? (
               <h3>{isEN ? "Click on the button left to get recommendation" : "সুপারিশ পেতে বামে বাটনে ক্লিক করুন"}</h3>
             ) : (
