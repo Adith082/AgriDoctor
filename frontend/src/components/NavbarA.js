@@ -10,6 +10,8 @@ import { useNavigate } from 'react-router-dom';
 import LanguageSelector from './LanguageSelector';
 import { LanguageContext } from '../contexts/LanguageContext';
 import { LoginContext } from '../contexts/LoginContext';
+import StandardImg from './StandardImg';
+import Image from 'react-bootstrap/Image';
 
 const NavbarA = () => {
 
@@ -68,21 +70,31 @@ const NavbarA = () => {
                 </Nav>
                 <Nav>
                     <Nav.Link href='/home' className={currentPage === 0 ? 'bold' : ''}>
-                        {isEN?"Home":"হোম"}
+                        <StandardImg url={"https://cdn-icons-png.flaticon.com/512/9492/9492029.png"}/>
+                        {isEN?" Home":" হোম"}
                     </Nav.Link>
                     <Nav.Link onClick={handleCropPredClick} className={currentPage === 1 ? 'bold' : ''}>
-                        {isEN?"Crop Recommendation":"ফসল সুপারিশ"}
+                        <StandardImg url={"https://cdn-icons-png.flaticon.com/512/1574/1574250.png"}/>
+                        {isEN?" Crop Recommendation":" ফসল সুপারিশ"}
                     </Nav.Link>
                     <Nav.Link onClick={handleFertilizerPredClick} className={currentPage === 2 ? 'bold' : ''}>
-                        {isEN?"Fertilizer Recommendation":"সার/উর্বরক সুপারিশ"}
+                        <StandardImg url={"https://cdn-icons-png.flaticon.com/512/6049/6049858.png"}/>
+                        {isEN?" Fertilizer Recommendation":" সার/উর্বরক সুপারিশ"}
                     </Nav.Link>
                     <Nav.Link onClick={handleDiseasePredClick} className={currentPage === 3 ? 'bold' : ''}>
-                        {isEN?"Disease Identification":"ফসল রোগ চিহ্নিতকরণ"}
+                        <StandardImg url={"https://cdn-icons-png.flaticon.com/512/3587/3587375.png"}/>
+                        {isEN?" Disease Identification":" ফসল রোগ চিহ্নিতকরণ"}
                     </Nav.Link>
                 </Nav>
                 "  "
                 <Nav>
-                    <Button variant="outline-success" onClick={handleLogout}>{isEN?"Logout":"লগ-আউট"}</Button>
+                    <Button variant="outline-success" onClick={handleLogout}><Image
+                        width={25}
+                        height={25}
+                        className="mr-3"
+                        src="https://cdn-icons-png.flaticon.com/512/5243/5243281.png" //Image Credit: FlatIcon
+                       />{isEN?"Logout":"লগ-আউট"}
+                    </Button>
                 </Nav>
                 "  "
                 <Nav>

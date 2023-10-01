@@ -408,7 +408,15 @@ function LoginRegister() {
         </span>
       </div>
       <div className={`login-section ${adminShow ? '' : 'hidden'}`}>
-        <h2 className="text-center mb-4 heading">{isEN ? "Admin Login" : "অ্যাডমিন লগইন"}</h2>
+        <h2 className="text-center mb-4 heading">
+          <Image
+            width={50}
+            height={50}
+            className="mr-3"
+            src="https://cdn-icons-png.flaticon.com/512/5516/5516903.png" //Image Credit: FlatIcon
+          />
+          {isEN ? "Admin Login" : "অ্যাডমিন লগইন"}
+        </h2>
         <InputGroup className="mb-3">
           <InputGroup.Text  className="input-group-text-dark">{isEN ? "E-mail" : "ই-মেইল"}</InputGroup.Text>
           <Form.Control

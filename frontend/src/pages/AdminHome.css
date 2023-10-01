@@ -26,3 +26,10 @@
     margin: 1rem;
     font-size: larger;
 }
+
+.image-upload-title-ex-center{
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    width: 100vw;
+    align-items: center;
+}

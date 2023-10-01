@@ -8,6 +8,7 @@ import { LoginContext } from '../contexts/LoginContext';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Image from 'react-bootstrap/Image';
 
 function AdminHome() {
 
@@ -131,7 +132,14 @@ function AdminHome() {
         <NavbarA/>
         {allFeedbacks?
         <div className='list-container'>
-          <h1 className='image-upload-title-ex'>User Feedbacks</h1>
+          <h1 className='image-upload-title-ex'>
+            <Image
+              width={50}
+              height={50}
+              className="mr-3"
+              src="https://cdn-icons-png.flaticon.com/512/7732/7732720.png" //Image Credit: FlatIcon
+            />{'  '}
+          User Feedbacks</h1>
 
           {allFeedbacks.slice(startIndex, endIndex).map((feedback, index)=> (
           <FeedbackA key={index} imageName={feedback.imageName} title={feedback.feedBackTitle} feedback={feedback.content} date={feedback.addedDate} id={feedback.feedBackId} getAllFeedbacks={getAllFeedbacks}/>
@@ -143,7 +151,7 @@ function AdminHome() {
             <Button variant="outline-light" onClick={handleNextClick}>Next</Button>
           </div>
 
-        </div>:<h1 className='image-upload-title-ex'>{'   '}All User Feedbacks Handled!</h1>}
+        </div>:<h1 className='image-upload-title-ex-center'>{'   '}All User Feedbacks Handled!</h1>}
     </div>
   )
 }
