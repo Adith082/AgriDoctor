@@ -21,6 +21,8 @@
     max-height: 80vh;
     overflow: auto;
     padding-top: 5vh;
+    padding-right: 2vw;
+    padding-left: 2vh;
 }
 
 .identify-disease-nopad{
