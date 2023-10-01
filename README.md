@@ -8,10 +8,11 @@ Fast-API AI/ML backend API Url: https://flamoverse-crop-recommender-from-weather
 
 Status: Full Project is Cloud Deployed by Us.
 
-## AI backend
+## AI and ML backend
 
 Related codes and notebooks Folder: &nbsp; [AI_API_Docker_codes](https://github.com/Adith082/Therap-Java-Fest-AgriDoctor/tree/main/AI_API_Docker_codes)  
 Hosted doc link: [AI API DOC](https://flamoverse-crop-recommender-from-weather-npk.hf.space/docs#/)   
+AI/ML backend API Url: https://flamoverse-crop-recommender-from-weather-npk.hf.space  
 
 ### Technologies
 Build tool : Docker  
@@ -52,7 +53,7 @@ Training notebook (Containing all details): [AI_API_Docker_codes/crop_disease_de
 
 ## React Frontend
 Code Folder: [frontend](https://github.com/Adith082/Therap-Java-Fest-AgriDoctor/tree/main/frontend)  
-React frontend Url: https://therap-javafest-agridoctor.vercel.app  
+React frontend cloud deployed Url: https://therap-javafest-agridoctor.vercel.app  
 
 ### Technologies
 Build tool : create-react-app  
