@@ -1,5 +1,0 @@
-package com.visionaryproviders.agridoctor.utils;
-
-public @interface Bean {
-
-}

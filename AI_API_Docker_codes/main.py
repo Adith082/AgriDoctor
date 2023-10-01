@@ -110,6 +110,11 @@ async def disease_prediction(input_data: UploadFile = File(...)):
     """
     try:
         img = Image.open(io.BytesIO(await input_data.read()))
+
+        # Convert to RGB if the image is not in RGB mode
+        if img.mode != 'RGB':
+            img = img.convert('RGB')
+        
         transform = transforms.Compose([
             transforms.Resize(256),
             transforms.ToTensor(),
@@ -142,6 +147,11 @@ async def disease_prediction_merged(input_data: UploadFile = File(...)):
     """
     try:
         img = Image.open(io.BytesIO(await input_data.read()))
+
+        # Convert to RGB if the image is not in RGB mode
+        if img.mode != 'RGB':
+            img = img.convert('RGB')
+        
         transform = transforms.Compose([
             transforms.Resize(256),
             transforms.ToTensor(),
