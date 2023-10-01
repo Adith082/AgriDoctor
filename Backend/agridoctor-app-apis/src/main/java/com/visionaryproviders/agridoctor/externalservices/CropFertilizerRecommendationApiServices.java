@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.visionaryproviders.agridoctor.payloads.CropFertilizerRecommendationRequestDto;
 import com.visionaryproviders.agridoctor.payloads.CropFertilizerRecommendationResponse;
@@ -33,6 +34,7 @@ import java.util.Map;
 
 @Service
 public class CropFertilizerRecommendationApiServices {
+	
 	
 	
 	private static final String CSV_FILE_PATH = "csv/fertilizer.csv";
@@ -64,7 +66,7 @@ public class CropFertilizerRecommendationApiServices {
 	public CropFertilizerRecommendationResponse callCropFertilizerRecommendationApi(CropFertilizerRecommendationRequestDto request) throws IOException{
 		
 		 //loading the csv file
-		 List<CropData> cropDataList = new ArrayList<>();
+		 List<CropData> cropDataList = new ArrayList<>() ;
 
 	        try (FileReader reader = new FileReader(CSV_FILE_PATH);
 	             CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader())) {
@@ -114,38 +116,11 @@ public class CropFertilizerRecommendationApiServices {
 	       
 	       
 	       
-	       String englishNlow = "\"The N value of your soil is low. \" +\r\n"
-	       		+ "	                \"Please consider the following suggestions:\\n\\n\" +\r\n"
-	       		+ "	                \"1. Add sawdust or fine woodchips to your soil – the carbon in the sawdust/woodchips love nitrogen and will help absorb and soak up any excess nitrogen.\\n\" +\r\n"
-	       		+ "	                \"2. Plant heavy nitrogen-feeding plants – tomatoes, corn, broccoli, cabbage, and spinach are examples of plants that thrive off nitrogen and will use up excess nitrogen.\\n\" +\r\n"
-	       		+ "	                \"3. Water your soil – soaking your soil with water will help leach the nitrogen deeper into your soil, effectively leaving less for your plants to use.\\n\" +\r\n"
-	       		+ "	                \"4. Sugar – In limited studies, it was shown that adding sugar to your soil can help potentially reduce the amount of nitrogen in your soil. Sugar is partially composed of carbon, an element which attracts and soaks up the nitrogen in the soil. This is a similar concept to adding sawdust/woodchips, which are high in carbon content.\\n\" +\r\n"
-	       		+ "	                \"5. Add composted manure to the soil.\\n\" +\r\n"
-	       		+ "	                \"6. Plant Nitrogen fixing plants like peas or beans.\\n\" +\r\n"
-	       		+ "	                \"7. Use NPK fertilizers with a high N value.\\n\" +\r\n"
-	       		+ "	                \"8. Do nothing – It may seem counter-intuitive, but if you already have plants that are producing lots of foliage, it may be best to let them continue to absorb all the nitrogen to amend the soil for your next crops.\");\r\n";
-	       
-	       String bengaliNlow = "আপনার মাটির N মান কম। দয়া করে নিম্নলিখিত পরামর্শ গুলি চিন্তা করুন:\r\n"
-	       		+ "\r\n"
-	       		+ "1. আপনার মাটির সাথে সোডাস্ট বা ক্ষুদ্র কাঠচিপস যোগ করুন - সোডাস্ট/কাঠচিপসের কার্বন পানির সাথে মিলিত হয় এবং যেটি নাইট্রোজেন প্রিয় এবং অতিরিক্ত নাইট্রোজেন শোষণ করবে এবং শুকিয়ে নেবে।\r\n"
-	       		+ "2. ভারী নাইট্রোজেন খাদ্য দেওয়া সবজি লাগানো - টমেটো, ভুট্টা, ব্রোকলি, বান্ধকপিশাক এবং পালকের মতো সবজি নাইট্রোজেন দ্বারা উন্নত হয় এবং অতিরিক্ত নাইট্রোজেন ব্যবহার করবে।\r\n"
-	       		+ "3. আপনার মাটি সাথে পানি দিন - আপনার মাটি পানি দিয়ে ভিজানো সাহায্য করবে নাইট্রোজেনটি মাটির গভীরে চলে আসতে, প্রত্যাশিতভাবে নাইট্রোজেন প্রয়োগ করার জন্য অধিক নেওয়া যায়।\r\n"
-	       		+ "4. চিনি - সীমিত গবেষণা অনুসারে, আপনার মাটির সাথে চিনি যোগ করলে নাইট্রোজেনের পরিমাণ সংক্ষিপ্ত করতে সাহায্য করতে পারে। চিনি আংশগুলি হলেও, যা মাটির নাইট্রোজেনের দিকে আকর্ষণ করে এবং তাতে নাইট্রোজেন শোষণ করে। এটি একই ধরণের ধারাগুলি যোগ করার সম্পর্কে নাইট্রোজেনের নিরাপত্তা দেওয়া হলেও, যেগুলি কার্বন কন্টেন্ট উচ্চ।\r\n"
-	       		+ "5. মাটির সাথে সংক্ষিপ্ত গোবর যোগ করুন।\r\n"
-	       		+ "6. মটকা বা বীনস ইত্যাদি নাইট্রোজেন মেনে চলার সবজি লাগানো।\r\n"
-	       		+ "7. উচ্চ N মান সহ NPK সার ব্যবহার করুন।\r\n"
-	       		+ "8. কিছু না করুন - এটি বিরোধাত্মক মনোনিবেশ হতে পারে, তবে যদি আপনার ইতিমধ্যে প্রাদুর্ভাব উত্পন্ন করছে যা সমস্ত নাইট্রোজেন শোষণ করতে দেয়, তবে আপনি তাদেরকে আপনার পরবর্তী ফসলের জন্য মাটি সংশোধন করতে দেওয়া সেরা হতে পারে।";
-	       
-	       
-	       fertilizerRecommendationText.setEnglishText(englishNlow);
-	       fertilizerRecommendationText.setBengaliText(bengaliNlow);
-           
-	       fertilizerDic.put("Nlow", fertilizerRecommendationText);
+	      
 	       
 	       
 	       
-	       
-	       
+	       FertilizerRecommendationText fertilizerRecommendationText2 = new FertilizerRecommendationText();
 	       String bengaliPHigh = "আপনার মাটির P মান উচ্চ। দয়া করে নিম্নলিখিত সুপারিশগুলি চিন্তা করুন:\r\n"
 	       		+ "\r\n"
 	       		+ "1. গোবর যোগ করা থেকে বিরত থাকুন - গোবরে আপনার মাটির জন্য অনেক গুরুত্বপূর্ণ পুষ্টি আছে, কিন্তু সাধারণভাবে এটি উচ্চ মাত্রাতে ফসফোরাস থাকে। গোবর যোগ করার সীমা নির্ধারণ করে দেওয়া, ফসফোরাস যোগ হওয়ার সাহায্য করবে।\r\n"
@@ -163,13 +138,15 @@ public class CropFertilizerRecommendationApiServices {
 	                "5. Use crop rotations to decrease high phosphorous levels.";
 	       
 	      
-	       fertilizerRecommendationText.setEnglishText(englishPHigh);
-	       fertilizerRecommendationText.setBengaliText(bengaliPHigh);
+	       fertilizerRecommendationText2.setEnglishText(englishPHigh);
+	       fertilizerRecommendationText2.setBengaliText(bengaliPHigh);
            
-	       fertilizerDic.put("PHigh", fertilizerRecommendationText);
+	       fertilizerDic.put("PHigh", fertilizerRecommendationText2);
 	       
 	       
 	       
+	       
+	       FertilizerRecommendationText fertilizerRecommendationText3 = new FertilizerRecommendationText();
 	       
 	       String bengaliPlow = "আপনার মাটির P মান কম। দয়া করে নিম্নলিখিত সুপারিশগুলি চিন্তা করুন:\r\n"
 	       		+ "\r\n"
@@ -196,10 +173,10 @@ public class CropFertilizerRecommendationApiServices {
 	       		+ "	                \"9. If pH is high, addition of appreciable amount of organic matter will help acidify the soil. Application of acidifying fertilizers, such as ammonium sulfate, can help lower soil pH.\");\r\n";
 	       
 	       
-	       fertilizerRecommendationText.setEnglishText(englishPlow);
-	       fertilizerRecommendationText.setBengaliText(bengaliPlow);
+	       fertilizerRecommendationText3.setEnglishText(englishPlow);
+	       fertilizerRecommendationText3.setBengaliText(bengaliPlow);
            
-	       fertilizerDic.put("Plow", fertilizerRecommendationText);
+	       fertilizerDic.put("Plow", fertilizerRecommendationText3);
 	       
 	       
 	       
@@ -209,34 +186,9 @@ public class CropFertilizerRecommendationApiServices {
 	       
 	       
 	       
-	       String bengaliKHigh = "আপনার মাটির K মান উচ্চ। নিম্নলিখিত সুপারিশগুলি বিবেচনা করুন:\r\n"
-	       		+ "\r\n"
-	       		+ "1. একটি শফল দিয়ে মাটিকে গভীরভাবে আবশ্যক করুন এবং পূর্ণরূপে পানি দিয়ে পানি-দ্রাব্য পোটানোর জন্য। মাটি পূর্ণরূপে শুকিয়ে দিন এবং দুই বা তিনবার আরও বার মাটি খোদাই এবং পানি দিয়ে পুনরায় পোটানোর জন্য।\r\n"
-	       		+ "2. মাটিকে ছানা এবং সম্ভবতঃ যেসব পাথর আছে, তা মাটি ছানার সময় এবং স্যুইল সিফটার ব্যবহার করে সম্পূর্ণ মুক্ত করুন। পাথরে সময় লগানো মিকা এবং ফেল্ডস্পার সহ খনিজ ধীরে ধীরে জলপথে পোটাসিয়াম মুক্ত করে।\r\n"
-	       		+ "3. পোটাসিয়াম-ধারণ বাণিজ্যিক সার প্রয়োগ করা বন্ধ করুন। শেষ সংখ্যা ক্ষেত্রে '0' থাকলে মাত্র বাণিজ্যিক সার প্রয়োগ করুন। বাণিজ্যিক সারে নাইট্রোজেন, ফসফোরাস এবং পোটাসিয়ামের মাত্রা পরিমাপ করার জন্য তিন সংখ্যা সিস্টেম ব্যবহার করা হয়। শেষ সংখ্যাটি পোটাসিয়ামের জন্য আছে। একটি অন্য বিকল্প হ'ল সাম্প্রতিক সার প্রয়োগ করা বন্ধ করে এবং মাটিকে সুধাও বৃদ্ধি করার জন্য শুধুমাত্র জৈব উপাদান ব্যবহার করা।\r\n"
-	       		+ "4. মুড়ি ডিম বা মুড়ি সমুদ্র গুটি, কাঠের রাখ বা সফট রক ফসফেট মাটিতে ক্যালসিয়াম যোগ করতে মাটিতে মিশিয়ে দিন। মাটির সঙ্গে জৈব কম্পোস্টের সর্বধিক 10 শতাংশ মিশানো সমৃদ্ধ এবং মাটিকে সম্বাদ করতে সাহায্য করতে।\r\n"
-	       		+ "5. K মাত্রা কম থাকার জন্য NPK সার এবং জৈব সার ব্যবহার করুন কারণ তাদের NPK মান কম থাকে।\r\n"
-	       		+ "6. মাটির মধ্যে নাইট্রোজেন স্থায়ী করতে সবজির একটি চাদর মটকা চাষ করুন। এই অভ্যন্তরীণ অভ্যন্তরীণ অভ্যন্তরীণ প্রথা মাটির জন্য নাইট্রোজেনের প্রয়োজনীয়তা পূরণ করবে এবং ফসফোরাস বা পোটাসিয়াম বাড়ানোর জন্য নয়।";
+	    
 	       
-	       String englishKHigh = "\"The K value of your soil is high. \" +\r\n"
-	       		+ "	                \"Please consider the following suggestions:\\n\\n\" +\r\n"
-	       		+ "	                \"1. Loosen the soil deeply with a shovel, and water thoroughly to dissolve water-soluble potassium. Allow the soil to fully dry, and repeat digging and watering the soil two or three more times.\\n\" +\r\n"
-	       		+ "	                \"2. Sift through the soil, and remove as many rocks as possible, using a soil sifter. Minerals occurring in rocks such as mica and feldspar slowly release potassium into the soil slowly through weathering.\\n\" +\r\n"
-	       		+ "	                \"3. Stop applying potassium-rich commercial fertilizer. Apply only commercial fertilizer that has a '0' in the final number field. Commercial fertilizers use a three number system for measuring levels of nitrogen, phosphorous, and potassium. The last number stands for potassium. Another option is to stop using commercial fertilizers altogether and to begin using only organic matter to enrich the soil.\\n\" +\r\n"
-	       		+ "	                \"4. Mix crushed eggshells, crushed seashells, wood ash or soft rock phosphate to the soil to add calcium. Mix in up to 10 percent of organic compost to help amend and balance the soil.\\n\" +\r\n"
-	       		+ "	                \"5. Use NPK fertilizers with low K levels and organic fertilizers since they have low NPK values.\\n\" +\r\n"
-	       		+ "	                \"6. Grow a cover crop of legumes that will fix nitrogen in the soil. This practice will meet the soil’s needs for nitrogen without increasing phosphorus or potassium.";
-	       
-	       fertilizerRecommendationText.setEnglishText(englishKHigh);
-	       fertilizerRecommendationText.setBengaliText(bengaliKHigh);
-           
-	       fertilizerDic.put("KHigh", fertilizerRecommendationText);
-	       
-	       
-	       
-	       
-	       
-	       
+	       FertilizerRecommendationText fertilizerRecommendationText4 = new FertilizerRecommendationText();
 	       
 	       String bengaliKlow = "আপনার মাটির K মান কম। নিম্নলিখিত সুপারিশগুলি বিবেচনা করুন:\r\n"
 	       		+ "\r\n"
@@ -254,11 +206,69 @@ public class CropFertilizerRecommendationApiServices {
 	                "4. Bury banana peels an inch below the soil's surface.\n" +
 	                "5. Use Potash fertilizers since they contain high values of potassium.";
 	       
-	       fertilizerRecommendationText.setEnglishText(englishKlow);
-	       fertilizerRecommendationText.setBengaliText(bengaliKlow);
+	       fertilizerRecommendationText4.setEnglishText(englishKlow);
+	       fertilizerRecommendationText4.setBengaliText(bengaliKlow);
        
-	       fertilizerDic.put("Klow", fertilizerRecommendationText);
+	       fertilizerDic.put("Klow", fertilizerRecommendationText4);
 	       
+	       
+	       FertilizerRecommendationText fertilizerRecommendationText5 = new FertilizerRecommendationText();
+	       String englishNlow = "\"The N value of your soil is low. \" +\r\n"
+		       		+ "	                \"Please consider the following suggestions:\\n\\n\" +\r\n"
+		       		+ "	                \"1. Add sawdust or fine woodchips to your soil – the carbon in the sawdust/woodchips love nitrogen and will help absorb and soak up any excess nitrogen.\\n\" +\r\n"
+		       		+ "	                \"2. Plant heavy nitrogen-feeding plants – tomatoes, corn, broccoli, cabbage, and spinach are examples of plants that thrive off nitrogen and will use up excess nitrogen.\\n\" +\r\n"
+		       		+ "	                \"3. Water your soil – soaking your soil with water will help leach the nitrogen deeper into your soil, effectively leaving less for your plants to use.\\n\" +\r\n"
+		       		+ "	                \"4. Sugar – In limited studies, it was shown that adding sugar to your soil can help potentially reduce the amount of nitrogen in your soil. Sugar is partially composed of carbon, an element which attracts and soaks up the nitrogen in the soil. This is a similar concept to adding sawdust/woodchips, which are high in carbon content.\\n\" +\r\n"
+		       		+ "	                \"5. Add composted manure to the soil.\\n\" +\r\n"
+		       		+ "	                \"6. Plant Nitrogen fixing plants like peas or beans.\\n\" +\r\n"
+		       		+ "	                \"7. Use NPK fertilizers with a high N value.\\n\" +\r\n"
+		       		+ "	                \"8. Do nothing – It may seem counter-intuitive, but if you already have plants that are producing lots of foliage, it may be best to let them continue to absorb all the nitrogen to amend the soil for your next crops.\");\r\n";
+		       
+		       String bengaliNlow = "আপনার মাটির N মান কম। দয়া করে নিম্নলিখিত পরামর্শ গুলি চিন্তা করুন:\r\n"
+		       		+ "\r\n"
+		       		+ "1. আপনার মাটির সাথে সোডাস্ট বা ক্ষুদ্র কাঠচিপস যোগ করুন - সোডাস্ট/কাঠচিপসের কার্বন পানির সাথে মিলিত হয় এবং যেটি নাইট্রোজেন প্রিয় এবং অতিরিক্ত নাইট্রোজেন শোষণ করবে এবং শুকিয়ে নেবে।\r\n"
+		       		+ "2. ভারী নাইট্রোজেন খাদ্য দেওয়া সবজি লাগানো - টমেটো, ভুট্টা, ব্রোকলি, বান্ধকপিশাক এবং পালকের মতো সবজি নাইট্রোজেন দ্বারা উন্নত হয় এবং অতিরিক্ত নাইট্রোজেন ব্যবহার করবে।\r\n"
+		       		+ "3. আপনার মাটি সাথে পানি দিন - আপনার মাটি পানি দিয়ে ভিজানো সাহায্য করবে নাইট্রোজেনটি মাটির গভীরে চলে আসতে, প্রত্যাশিতভাবে নাইট্রোজেন প্রয়োগ করার জন্য অধিক নেওয়া যায়।\r\n"
+		       		+ "4. চিনি - সীমিত গবেষণা অনুসারে, আপনার মাটির সাথে চিনি যোগ করলে নাইট্রোজেনের পরিমাণ সংক্ষিপ্ত করতে সাহায্য করতে পারে। চিনি আংশগুলি হলেও, যা মাটির নাইট্রোজেনের দিকে আকর্ষণ করে এবং তাতে নাইট্রোজেন শোষণ করে। এটি একই ধরণের ধারাগুলি যোগ করার সম্পর্কে নাইট্রোজেনের নিরাপত্তা দেওয়া হলেও, যেগুলি কার্বন কন্টেন্ট উচ্চ।\r\n"
+		       		+ "5. মাটির সাথে সংক্ষিপ্ত গোবর যোগ করুন।\r\n"
+		       		+ "6. মটকা বা বীনস ইত্যাদি নাইট্রোজেন মেনে চলার সবজি লাগানো।\r\n"
+		       		+ "7. উচ্চ N মান সহ NPK সার ব্যবহার করুন।\r\n"
+		       		+ "8. কিছু না করুন - এটি বিরোধাত্মক মনোনিবেশ হতে পারে, তবে যদি আপনার ইতিমধ্যে প্রাদুর্ভাব উত্পন্ন করছে যা সমস্ত নাইট্রোজেন শোষণ করতে দেয়, তবে আপনি তাদেরকে আপনার পরবর্তী ফসলের জন্য মাটি সংশোধন করতে দেওয়া সেরা হতে পারে।";
+		       
+		       
+		       fertilizerRecommendationText5.setEnglishText(englishNlow);
+		       fertilizerRecommendationText5.setBengaliText(bengaliNlow);
+	           
+		       fertilizerDic.put("Nlow", fertilizerRecommendationText5);
+		       
+	       
+		       FertilizerRecommendationText fertilizerRecommendationText6 = new FertilizerRecommendationText();
+		       String bengaliKHigh = "আপনার মাটির K মান উচ্চ। নিম্নলিখিত সুপারিশগুলি বিবেচনা করুন:\r\n"
+			       		+ "\r\n"
+			       		+ "1. একটি শফল দিয়ে মাটিকে গভীরভাবে আবশ্যক করুন এবং পূর্ণরূপে পানি দিয়ে পানি-দ্রাব্য পোটানোর জন্য। মাটি পূর্ণরূপে শুকিয়ে দিন এবং দুই বা তিনবার আরও বার মাটি খোদাই এবং পানি দিয়ে পুনরায় পোটানোর জন্য।\r\n"
+			       		+ "2. মাটিকে ছানা এবং সম্ভবতঃ যেসব পাথর আছে, তা মাটি ছানার সময় এবং স্যুইল সিফটার ব্যবহার করে সম্পূর্ণ মুক্ত করুন। পাথরে সময় লগানো মিকা এবং ফেল্ডস্পার সহ খনিজ ধীরে ধীরে জলপথে পোটাসিয়াম মুক্ত করে।\r\n"
+			       		+ "3. পোটাসিয়াম-ধারণ বাণিজ্যিক সার প্রয়োগ করা বন্ধ করুন। শেষ সংখ্যা ক্ষেত্রে '0' থাকলে মাত্র বাণিজ্যিক সার প্রয়োগ করুন। বাণিজ্যিক সারে নাইট্রোজেন, ফসফোরাস এবং পোটাসিয়ামের মাত্রা পরিমাপ করার জন্য তিন সংখ্যা সিস্টেম ব্যবহার করা হয়। শেষ সংখ্যাটি পোটাসিয়ামের জন্য আছে। একটি অন্য বিকল্প হ'ল সাম্প্রতিক সার প্রয়োগ করা বন্ধ করে এবং মাটিকে সুধাও বৃদ্ধি করার জন্য শুধুমাত্র জৈব উপাদান ব্যবহার করা।\r\n"
+			       		+ "4. মুড়ি ডিম বা মুড়ি সমুদ্র গুটি, কাঠের রাখ বা সফট রক ফসফেট মাটিতে ক্যালসিয়াম যোগ করতে মাটিতে মিশিয়ে দিন। মাটির সঙ্গে জৈব কম্পোস্টের সর্বধিক 10 শতাংশ মিশানো সমৃদ্ধ এবং মাটিকে সম্বাদ করতে সাহায্য করতে।\r\n"
+			       		+ "5. K মাত্রা কম থাকার জন্য NPK সার এবং জৈব সার ব্যবহার করুন কারণ তাদের NPK মান কম থাকে।\r\n"
+			       		+ "6. মাটির মধ্যে নাইট্রোজেন স্থায়ী করতে সবজির একটি চাদর মটকা চাষ করুন। এই অভ্যন্তরীণ অভ্যন্তরীণ অভ্যন্তরীণ প্রথা মাটির জন্য নাইট্রোজেনের প্রয়োজনীয়তা পূরণ করবে এবং ফসফোরাস বা পোটাসিয়াম বাড়ানোর জন্য নয়।";
+			       
+			       String englishKHigh = "\"The K value of your soil is high. \" +\r\n"
+			       		+ "	                \"Please consider the following suggestions:\\n\\n\" +\r\n"
+			       		+ "	                \"1. Loosen the soil deeply with a shovel, and water thoroughly to dissolve water-soluble potassium. Allow the soil to fully dry, and repeat digging and watering the soil two or three more times.\\n\" +\r\n"
+			       		+ "	                \"2. Sift through the soil, and remove as many rocks as possible, using a soil sifter. Minerals occurring in rocks such as mica and feldspar slowly release potassium into the soil slowly through weathering.\\n\" +\r\n"
+			       		+ "	                \"3. Stop applying potassium-rich commercial fertilizer. Apply only commercial fertilizer that has a '0' in the final number field. Commercial fertilizers use a three number system for measuring levels of nitrogen, phosphorous, and potassium. The last number stands for potassium. Another option is to stop using commercial fertilizers altogether and to begin using only organic matter to enrich the soil.\\n\" +\r\n"
+			       		+ "	                \"4. Mix crushed eggshells, crushed seashells, wood ash or soft rock phosphate to the soil to add calcium. Mix in up to 10 percent of organic compost to help amend and balance the soil.\\n\" +\r\n"
+			       		+ "	                \"5. Use NPK fertilizers with low K levels and organic fertilizers since they have low NPK values.\\n\" +\r\n"
+			       		+ "	                \"6. Grow a cover crop of legumes that will fix nitrogen in the soil. This practice will meet the soil’s needs for nitrogen without increasing phosphorus or potassium.";
+			       
+			       fertilizerRecommendationText6.setEnglishText(englishKHigh);
+			       fertilizerRecommendationText6.setBengaliText(bengaliKHigh);
+		           
+			       fertilizerDic.put("KHigh", fertilizerRecommendationText6);
+			       
+			       
+			       
+			       
 	       
 	       
 	       
@@ -323,9 +333,15 @@ public class CropFertilizerRecommendationApiServices {
 	        
 	        ///logic
 	        int N = request.getNitrogen();
-	        int P = request.getPhosphorous();
+	        int P = request.getPhosphorous() ;
 	        int K = request.getPottasium();
 	        
+	        System.out.println(request);
+	        System.out.println(N + " N before");
+	        System.out.println(P + " P before");
+	        System.out.println(request.getPottasium() + " K before");
+	        
+	        System.out.println(request.getCropName());
 	        
 	        CropData selectedCrop = null;
 
@@ -351,6 +367,20 @@ public class CropFertilizerRecommendationApiServices {
 	                key = kDiff < 0 ? "KHigh" : "Klow";
 	            }
 
+	            System.out.println("this is the key " + key);
+	            System.out.println("nDiff: " + nDiff);
+	            System.out.println("pDiff: " + pDiff);
+	            System.out.println("kDiff: " + kDiff);
+	            
+	            System.out.println("getN: " + selectedCrop.getN());
+	            System.out.println("getP: " + selectedCrop.getP());
+	            System.out.println("getK: " + selectedCrop.getK());
+	            
+	            System.out.println("N: " + N);
+	            System.out.println("P: " + P);
+	            System.out.println("K: " + K);
+	            
+	            
 	            // Get the fertilizer recommendation from the map
 	            String recommendationInEnglish = fertilizerDic.get(key).getEnglishText();
 	            String recommendationInBengali = fertilizerDic.get(key).getBengaliText();
