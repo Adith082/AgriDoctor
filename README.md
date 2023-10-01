@@ -1,9 +1,16 @@
 # Therap-Java-Fest-AgriDoctor
 
+## All Cloud Deployed/Hosted URLs for this project by us:
+
+Java Spring Boot backend API Url: https://agridoctorbackend-production.up.railway.app  
+React frontend Url: https://therap-javafest-agridoctor.vercel.app  
+Fast-API AI/ML backend API Url: https://flamoverse-crop-recommender-from-weather-npk.hf.space  
+
+Status: Full Project is Cloud Deployed.
+
 ## AI backend
 
-Related codes and notebooks Folder: &nbsp; [AI_API_Docker_codes](https://github.com/Adith082/Therap-Java-Fest-AgriDoctor/tree/main/AI_API_Docker_codes)  
-Cloud Hosted API URL: https://flamoverse-crop-recommender-from-weather-npk.hf.space  
+Related codes and notebooks Folder: &nbsp; [AI_API_Docker_codes](https://github.com/Adith082/Therap-Java-Fest-AgriDoctor/tree/main/AI_API_Docker_codes)
 Hosted doc link: [AI API DOC](https://flamoverse-crop-recommender-from-weather-npk.hf.space/docs#/)   
 
 ### Crop Recommendation
