@@ -179,7 +179,7 @@ function LoginRegister() {
       .then(response => {
         setShowModal(false);
         toast.success(isEN?"Registration Success!":"নিবন্ধন সফল!");
-        navigate("/");
+        handleLoginClick();
       })
       .catch(error => {
         console.error('Error:', error);
