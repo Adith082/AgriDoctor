@@ -12,7 +12,7 @@ import Image from 'react-bootstrap/Image';
 
 function AdminHome() {
 
-  const itemsPerPage = 4; // Display 4 items per page
+  const itemsPerPage = 3; // Display 3 items per page
 
   const {isEN} = useContext(LanguageContext);
   const {token, role} = useContext(LoginContext);
