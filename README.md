@@ -1,4 +1,4 @@
-# Therap-Java-Fest-AgriDoctor
+# AgriDoctor
 
 ## All Cloud Deployed/Hosted URLs for this project by us:
 
